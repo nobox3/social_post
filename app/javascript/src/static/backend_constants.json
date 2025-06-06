@@ -1,0 +1,24 @@
+{
+  "MAX_IMAGES_COUNT": 3,
+  "MAX_TEXTAREA_COUNT": 2000,
+  "ACCEPTED_IMAGE_TYPES": [
+    "image/webp",
+    "image/png",
+    "image/jpeg",
+    "image/gif"
+  ],
+  "MAX_IMAGE_FILE_SIZE": 31457280,
+  "VALID_PASSWORD_REGEX": "(?-mix:\\A[a-zA-Z0-9]+\\z)",
+  "MAX_IMAGE_DIMENSION_SIZE": 7680,
+  "MAX_TEXT_COUNT": 200,
+  "LOCALE_LONG": {
+    "ja": "ja-JP",
+    "en": "en-US"
+  },
+  "SITE_NAME": "Social Post",
+  "PERMITTED_SEARCH_PARAMS": [
+    "page",
+    "s",
+    "k"
+  ]
+}

@@ -1,0 +1,275 @@
+# 以下を参考
+# https://github.com/rails/rails/blob/main/.rubocop.yml
+# https://github.com/onk/onkcop/blob/master/config/rubocop.yml
+
+plugins:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - '**/tmp/**/*'
+    - '**/templates/**/*'
+    - '**/vendor/**/*'
+    - 'bin/**/*'
+    - 'db/schema.rb'
+    - 'db/migrate/**/*'
+    - 'Gemfile'
+    - 'Gemfile.lock'
+    - '**/*.rake'
+    - 'Rakefile'
+    - 'config.ru'
+    - 'spec/rails_helper.rb'
+    - 'spec/spec_helper.rb'
+    - 'Guardfile'
+    - '**/node_modules/**/*'
+    # If "Unresolved tag" error occurs, add the following line to the setting of your code editor.
+    # "yaml.customTags": ["!ruby/regexp"]
+    # See also: https://github.com/redhat-developer/vscode-yaml?tab=readme-ov-file#adding-custom-tags
+    - !ruby/regexp /config\/(?!routes.rb).*/
+
+# --------------------
+# Lint, Metrics and Naming
+# --------------------
+# https://docs.rubocop.org/rubocop/cops_lint.html#lintambiguousblockassociation
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+# https://docs.rubocop.org/rubocop/cops_metrics.html
+Metrics:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_naming.html#namingmethodparametername
+Naming/MethodParameterName:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_naming.html#namingpredicatename
+Naming/PredicateName:
+  Enabled: false
+
+# --------------------
+# Layout
+# --------------------
+# メソッドをグループ分けして書き順を揃えておくと読みやすくなる。
+# https://docs.rubocop.org/rubocop/cops_layout.html#layoutclassstructure
+Layout/ClassStructure:
+  Enabled: true
+
+# https://docs.rubocop.org/rubocop/cops_layout.html#layoutfirstarrayelementindentation
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+# https://docs.rubocop.org/rubocop/cops_layout.html#layoutfirsthashelementindentation
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+# https://docs.rubocop.org/rubocop/cops_layout.html#layoutindentationconsistency
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+
+# https://docs.rubocop.org/rubocop/cops_layout.html#layoutlinelength
+Layout/LineLength:
+  AutoCorrect: false
+  AllowedPatterns: ['^(\s*#)']
+
+# https://docs.rubocop.org/rubocop/cops_layout.html#layoutmultilinemethodcallindentation
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+
+# --------------------
+# Style
+# --------------------
+# https://docs.rubocop.org/rubocop/cops_style.html#styleargumentsforwarding
+Style/ArgumentsForwarding:
+  UseAnonymousForwarding: false
+
+# 日本語のコメントを許可する
+# https://docs.rubocop.org/rubocop/cops_style.html#styleasciicomments
+Style/AsciiComments:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_style.html#styleblockdelimiters
+Style/BlockDelimiters:
+  AutoCorrect: false
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+# その時の状況に合わせて見やすいほうで書く
+# https://docs.rubocop.org/rubocop/cops_style.html#styleconditionalassignment
+Style/ConditionalAssignment:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_style.html#styledocumentation
+Style/Documentation:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_style.html#styleemptymethod
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+# https://docs.rubocop.org/rubocop/cops_style.html#stylefrozenstringliteralcomment
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'db/**/*'
+    - 'spec/**/*'
+
+# その時の状況に合わせて見やすいほうで書く
+# https://docs.rubocop.org/rubocop/cops_style.html#styleguardclause
+Style/GuardClause:
+  Enabled: false
+
+# その時の状況に合わせて見やすいほうで書く
+# https://docs.rubocop.org/rubocop/cops_style.html#styleifinsideelse
+Style/IfInsideElse:
+  Enabled: false
+
+# その時の状況に合わせて見やすいほうで書く
+# https://docs.rubocop.org/rubocop/cops_style.html#styleifunlessmodifier
+Style/IfUnlessModifier:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_style.html#stylelambda
+Style/Lambda:
+  EnforcedStyle: literal
+
+# https://docs.rubocop.org/rubocop/cops_style.html#stylenumericliterals
+Style/NumericLiterals:
+  MinDigits: 7
+  Strict: true
+
+# どちらでも OK
+# https://docs.rubocop.org/rubocop/cops_style.html#stylenumericpredicate
+Style/NumericPredicate:
+  Enabled: false
+
+# どちらでも OK
+# https://docs.rubocop.org/rubocop/cops_style.html#stylepreferredhashmethods
+Style/PreferredHashMethods:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_style.html#styleredundantreturn
+Style/RedundantReturn:
+  AllowMultipleReturnValues: true
+
+# https://docs.rubocop.org/rubocop/cops_style.html#stylesemicolon
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+# どちらでも OK
+# https://docs.rubocop.org/rubocop/cops_style.html#stylesymbolarray
+Style/SymbolArray:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_style.html#styletrailingcommainarguments
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+# https://docs.rubocop.org/rubocop/cops_style.html#styletrailingcommainarrayliteral
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+# https://docs.rubocop.org/rubocop/cops_style.html#styletrailingcommainhashliteral
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+# どちらでも OK
+# https://docs.rubocop.org/rubocop/cops_style.html#stylewordarray
+Style/WordArray:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop/cops_style.html#styleyodacondition
+Style/YodaCondition:
+  EnforcedStyle: forbid_for_equality_operators_only
+
+# どちらでも OK
+# https://docs.rubocop.org/rubocop/cops_style.html#stylezerolengthpredicate
+Style/ZeroLengthPredicate:
+  Enabled: false
+
+# --------------------
+# Rails
+# --------------------
+# https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsactioncontrollerflashbeforerender
+Rails/ActionControllerFlashBeforeRender:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsdelegate
+Rails/Delegate:
+  Enabled: false
+
+# どちらでも OK
+# https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsfilepath
+Rails/FilePath:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsoutput
+Rails/Output:
+  Exclude:
+    - 'db/seeds.rb'
+    - 'db/seeds/**/*'
+
+# https://docs.rubocop.org/rubocop-rails/cops_rails.html#railssafenavigation
+Rails/SafeNavigation:
+  ConvertTry: true
+
+# https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsskipsmodelvalidations
+Rails/SkipsModelValidations:
+  Enabled: false
+
+# staging 環境を使っているので追加
+# https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsunknownenv
+Rails/UnknownEnv:
+  Environments:
+    - development # rubocop default.yml
+    - test # rubocop default.yml
+    - production # rubocop default.yml
+    - staging
+
+# --------------------
+# RSpec
+# --------------------
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspeccontextwording
+RSpec/ContextWording:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecdescribedclass
+RSpec/DescribedClass:
+  EnforcedStyle: explicit
+
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecexamplelength
+RSpec/ExampleLength:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecexpectchange
+RSpec/ExpectChange:
+  EnforcedStyle: block
+
+# どちらでも OK
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecimplicitexpect
+RSpec/ImplicitExpect:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecmultipleexpectations
+RSpec/MultipleExpectations:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecmultiplememoizedhelpers
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecnamedsubject
+RSpec/NamedSubject:
+  EnforcedStyle: named_only
+
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecnestedgroups
+RSpec/NestedGroups:
+  Enabled: false
+
+# どちらでも OK
+# https://docs.rubocop.org/rubocop-rspec/cops_rspec.html#rspecreturnfromstub
+RSpec/ReturnFromStub:
+  Enabled: false

@@ -1,0 +1,48 @@
+en:
+  activerecord:
+    errors:
+      messages:
+        invalid_transition: Invalid operation
+        record_invalid: 'Validation failed: %{errors}'
+        restrict_dependent_destroy:
+          has_one: Cannot delete record because a dependent %{record} exists
+          has_many: Cannot delete record because dependent %{record} exist
+        same_as_current_value: 'Same as the current %{attribute}'
+        same_user: Same user
+        user_not_authorized: You are not authorized to perform this action
+
+        # Devise
+        not_saved:
+          one: '1 error prohibited this %{resource} from being saved:'
+          other: '%{count} errors prohibited this %{resource} from being saved:'
+
+        # Active Storage Validations
+        # https://github.com/igorkasyanchuk/active_storage_validations?tab=readme-ov-file#internationalization-i18n
+        content_type_invalid:
+          one: has an invalid content type (authorized content type is %{authorized_human_content_types})
+          other: has an invalid content type (authorized content types are %{authorized_human_content_types})
+        content_type_spoofed: has an invalid content type
+        dimension_max_not_included_in: must be less than or equal to %{width} x %{height} pixel
+        file_size_not_less_than_or_equal_to: must be less than or equal to %{max}
+        limit_max_exceeded:
+          zero: no files attached (maximum is %{max} files)
+          one: too many files attached (maximum is %{max} files, got %{count})
+          other: too many files attached (maximum is %{max} files, got %{count})
+        media_metadata_missing: is not a valid media file
+      models:
+        auth_provider:
+          has_no_other_authentication_methods: Cannot disconnect because there are no other login methods
+        user:
+          attributes:
+            email:
+              invalid: is invalid format
+              taken: has already been taken
+
+              # Devise
+              already_confirmed: was already confirmed, please try signing in
+              confirmation_period_expired: needs to be confirmed within %{period}, please request a new one
+              expired: has expired, please request a new one
+              not_found: not found
+              not_locked: was not locked
+            password:
+              invalid: must be alphanumeric characters

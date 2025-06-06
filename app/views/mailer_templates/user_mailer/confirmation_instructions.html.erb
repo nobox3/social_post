@@ -1,0 +1,5 @@
+<p><%= mailer.translate(:greeting, recipient: @email) %></p>
+
+<p><%= mailer.translate(:instruction) %></p>
+
+<p><%= link_to mailer.translate(:link), confirmation_url(@resource, confirmation_token: @token) %></p>

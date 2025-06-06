@@ -1,0 +1,45 @@
+en:
+  meta:
+    default:
+      title: Demo site
+      description: Demo site for portfolio
+    account:
+      feed:
+        title: Feed
+        description: Displays the latest posts from users you follow
+      posts:
+        title: Posts
+        description: Displays a list of posts
+      followings:
+        title: Following
+        description: Displays a list of users you follow
+      followers:
+        title: Followers
+        description: Displays a list of your followers
+      profile:
+        title: Profile
+        description: Displays your profile
+      register_info:
+        title: Registration Info
+        description: Displays your registration information
+      app_settings:
+        title: Settings
+        description: Displays your settings
+    users:
+      title: "%{user_name}'s Posts"
+      description: Displays a list of posts by %{user_name}
+      posts:
+        title: "%{user_name}'s Posts"
+        description: Displays a list of posts by %{user_name}
+      followings:
+        title: "%{user_name}'s Following"
+        description: Displays a list of users %{user_name} follows
+      followers:
+        title: "%{user_name}'s Followers"
+        description: Displays a list of %{user_name}'s followers
+      sign_in:
+        title: Sign In
+        description: Sign in to your account
+      sign_up:
+        title: Sign Up
+        description: Create a new account

@@ -1,0 +1,30 @@
+ja:
+  common_errors:
+    empty: 必須項目です
+    invalid_file: '%{type}形式が選択可能です'
+    invalid_field: 無効な%{field}です
+    invalid_password_format: パスワードは半角英数字で設定してください
+    please_input_field: '%{field}を入力してください'
+    please_select_field: '%{field}を選択してください'
+    please_make_sure_field: '%{field}に誤りがないかお確かめください。'
+    too_large_file: ファイルサイズは%{size}以下にしてください
+    too_large_size: 幅%{count}px×高さ%{count}px以下の画像にしてください
+    too_long: '%{count}文字以内で入力してください'
+    too_many: '%{item}は%{count}個まで選択可能です'
+    too_short: '%{count}文字以上で入力してください'
+    unknown: 不明なエラーが発生しました
+  system_errors:
+    code_400: ページが表示できませんでした。
+    code_400_sub: Bad Request
+    code_401: ページが表示できませんでした。
+    code_401_sub: Unauthorized
+    code_402: このページの表示にはお支払いが必要です。
+    code_402_sub: Payment required
+    code_404: ページが見つかりませんでした。
+    code_404_sub: Not found
+    code_422: ページが表示できませんでした。
+    code_422_sub: Unprocessable entity
+    code_500: ページが表示できませんでした。
+    code_500_sub: Internal server error
+    default: システムエラーが発生しました。
+    reload_this_page: ページを再読み込みしてください。

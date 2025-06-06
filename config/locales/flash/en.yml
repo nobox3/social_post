@@ -1,0 +1,19 @@
+en:
+  flash:
+    account:
+      profile_updated: Profile was updated
+    auth_provider:
+      deleted: '%{provider} was disconnected'
+    relationship:
+      followed: Followed
+      unfollowed: Unfollowed
+    record:
+      create:
+        success: '%{record} was successfully created!'
+        error: '%{record} was failed to created'
+      update:
+        success: '%{record} was updated'
+        error: '%{record} was failed to update'
+      destroy:
+        success: '%{record} was deleted'
+        error: '%{record} was failed to deleted'

@@ -1,0 +1,19 @@
+ja:
+  flash:
+    account:
+      profile_updated: プロフィールを更新しました
+    auth_provider:
+      deleted: '%{provider}の連携を解除しました'
+    relationship:
+      followed: フォローしました
+      unfollowed: フォローを解除しました
+    record:
+      create:
+        success: '%{record}を登録しました'
+        error: '%{record}の登録に失敗しました'
+      update:
+        success: '%{record}を更新しました'
+        error: '%{record}の更新に失敗しました'
+      destroy:
+        success: '%{record}を削除しました'
+        error: '%{record}の削除に失敗しました'

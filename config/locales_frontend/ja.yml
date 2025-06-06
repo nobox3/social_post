@@ -1,0 +1,87 @@
+ja:
+  generic:
+    back: 戻る
+    back_to_home: ホームへ戻る
+    back_to_index: 一覧へ戻る
+    cancel: キャンセル
+    change: 変更する
+    close: 閉じる
+    continue: 続ける
+    create: 作成する
+    cut_out: 切り取る
+    date: 日付
+    delete: 削除
+    description: 説明
+    edit: 編集
+    home: ホーム
+    image: 画像
+    language: 言語
+    name: 名前
+    next: 次へ
+    other: その他
+    post: 投稿する
+    publish: 公開
+    published: 公開済み
+    register: 登録する
+    registration: 登録
+    reload: 再読み込み
+    reply: 返信する
+    save: 保存
+    search: 検索
+    select_image: 画像を選択
+    send: 送信
+    show_detail: 詳細
+    size: サイズ
+    sort: 並び替え
+    submit: 送信
+    terms_of_service: 利用規約
+    update: 更新する
+    url: URL
+  user:
+    posts: 投稿
+    follow: フォローする
+    unfollow: フォロー解除
+    follower: フォロワー
+    following: フォロー中
+    account:
+      avatar_image: プロフィール画像
+      feed: フィード
+      profile: プロフィール
+      register_info: 登録情報
+      app_settings: 設定
+    auth:
+      login: ログイン
+      logout: ログアウト
+      signup: アカウント登録
+      with_provider:
+        sign_in: '%{name}でログイン'
+        sign_up: '%{name}で登録'
+      delete_provider: '%{provider}アカウントの連携を解除'
+      already_have_account: アカウントをお持ちですか？
+      not_registered_yet: まだ登録していませんか？
+      forgot_your_password: パスワードを忘れましたか？
+      didn_t_receive_confirmation_instructions: アカウント確認のメールを受け取っていませんか？
+      didn_t_receive_unlock_instructions: アカウントのロック解除方法のメールを受け取っていませんか？
+      current_password: 現在のパスワード
+      new_password: 新しいパスワード
+      send_me_reset_password_instructions: パスワードの再設定方法を送信する
+      resend_confirmation_instructions: アカウント確認メール再送
+      resend_unlock_instructions: アカウントのロック解除方法を再送する
+      delete: アカウント削除
+      placeholder:
+        password: 半角英数字%{count}文字以上
+      modal:
+        delete:
+          title: アカウントを削除してもよろしいですか？
+          text: 削除すると元に戻せません
+          enter: 削除する
+  post:
+    placeholder: 投稿を書く
+    modal:
+      delete:
+        title: 投稿を削除しますか？
+        text: 削除すると元に戻せません
+        enter: 削除する
+  dropzone:
+    drop: '%{item}をドロップ'
+    select_or_drag_and_drop: '%{item}をドラッグ&ドロップ'

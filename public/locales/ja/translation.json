@@ -1,0 +1,226 @@
+{
+  "meta": {
+    "default": {
+      "title": "Demo site",
+      "description": "Demo site for portfolio"
+    },
+    "account": {
+      "feed": {
+        "title": "フィード",
+        "description": "あなたがフォローしているユーザーの最新の投稿を表示します"
+      },
+      "posts": {
+        "title": "投稿一覧",
+        "description": "投稿一覧を表示します"
+      },
+      "followings": {
+        "title": "フォロー中",
+        "description": "フォロー中のユーザー一覧を表示します"
+      },
+      "followers": {
+        "title": "フォロワー",
+        "description": "フォロワー一覧を表示します"
+      },
+      "profile": {
+        "title": "プロフィール",
+        "description": "プロフィールを表示します"
+      },
+      "register_info": {
+        "title": "登録情報",
+        "description": "登録情報を表示します"
+      },
+      "app_settings": {
+        "title": "設定",
+        "description": "設定を表示します"
+      }
+    },
+    "users": {
+      "title": "%{user_name}さんの投稿一覧",
+      "description": "%{user_name}さんの投稿一覧を表示します",
+      "posts": {
+        "title": "%{user_name}さんの投稿一覧",
+        "description": "%{user_name}さんの投稿一覧を表示します"
+      },
+      "followings": {
+        "title": "%{user_name}さんのフォロー中",
+        "description": "%{user_name}さんのフォロー中のユーザー一覧を表示します"
+      },
+      "followers": {
+        "title": "%{user_name}さんのフォロワー",
+        "description": "%{user_name}さんのフォロワー一覧を表示します"
+      },
+      "sign_in": {
+        "title": "ログイン",
+        "description": "アカウントにログインします"
+      },
+      "sign_up": {
+        "title": "アカウント登録",
+        "description": "新しいアカウントを作成します"
+      }
+    }
+  },
+  "common_errors": {
+    "empty": "必須項目です",
+    "invalid_file": "%{type}形式が選択可能です",
+    "invalid_field": "無効な%{field}です",
+    "invalid_password_format": "パスワードは半角英数字で設定してください",
+    "please_input_field": "%{field}を入力してください",
+    "please_select_field": "%{field}を選択してください",
+    "please_make_sure_field": "%{field}に誤りがないかお確かめください。",
+    "too_large_file": "ファイルサイズは%{size}以下にしてください",
+    "too_large_size": "幅%{count}px×高さ%{count}px以下の画像にしてください",
+    "too_long": "%{count}文字以内で入力してください",
+    "too_many": "%{item}は%{count}個まで選択可能です",
+    "too_short": "%{count}文字以上で入力してください",
+    "unknown": "不明なエラーが発生しました"
+  },
+  "system_errors": {
+    "code_400": "ページが表示できませんでした。",
+    "code_400_sub": "Bad Request",
+    "code_401": "ページが表示できませんでした。",
+    "code_401_sub": "Unauthorized",
+    "code_402": "このページの表示にはお支払いが必要です。",
+    "code_402_sub": "Payment required",
+    "code_404": "ページが見つかりませんでした。",
+    "code_404_sub": "Not found",
+    "code_422": "ページが表示できませんでした。",
+    "code_422_sub": "Unprocessable entity",
+    "code_500": "ページが表示できませんでした。",
+    "code_500_sub": "Internal server error",
+    "default": "システムエラーが発生しました。",
+    "reload_this_page": "ページを再読み込みしてください。"
+  },
+  "generic": {
+    "back": "戻る",
+    "back_to_home": "ホームへ戻る",
+    "back_to_index": "一覧へ戻る",
+    "cancel": "キャンセル",
+    "change": "変更する",
+    "close": "閉じる",
+    "continue": "続ける",
+    "create": "作成する",
+    "cut_out": "切り取る",
+    "date": "日付",
+    "delete": "削除",
+    "description": "説明",
+    "edit": "編集",
+    "home": "ホーム",
+    "image": "画像",
+    "language": "言語",
+    "name": "名前",
+    "next": "次へ",
+    "other": "その他",
+    "post": "投稿する",
+    "publish": "公開",
+    "published": "公開済み",
+    "register": "登録する",
+    "registration": "登録",
+    "reload": "再読み込み",
+    "reply": "返信する",
+    "save": "保存",
+    "search": "検索",
+    "select_image": "画像を選択",
+    "send": "送信",
+    "show_detail": "詳細",
+    "size": "サイズ",
+    "sort": "並び替え",
+    "submit": "送信",
+    "terms_of_service": "利用規約",
+    "update": "更新する",
+    "url": "URL"
+  },
+  "user": {
+    "posts": "投稿",
+    "follow": "フォローする",
+    "unfollow": "フォロー解除",
+    "follower": "フォロワー",
+    "following": "フォロー中",
+    "account": {
+      "avatar_image": "プロフィール画像",
+      "feed": "フィード",
+      "profile": "プロフィール",
+      "register_info": "登録情報",
+      "app_settings": "設定"
+    },
+    "auth": {
+      "login": "ログイン",
+      "logout": "ログアウト",
+      "signup": "アカウント登録",
+      "with_provider": {
+        "sign_in": "%{name}でログイン",
+        "sign_up": "%{name}で登録"
+      },
+      "delete_provider": "%{provider}アカウントの連携を解除",
+      "already_have_account": "アカウントをお持ちですか？",
+      "not_registered_yet": "まだ登録していませんか？",
+      "forgot_your_password": "パスワードを忘れましたか？",
+      "didn_t_receive_confirmation_instructions": "アカウント確認のメールを受け取っていませんか？",
+      "didn_t_receive_unlock_instructions": "アカウントのロック解除方法のメールを受け取っていませんか？",
+      "current_password": "現在のパスワード",
+      "new_password": "新しいパスワード",
+      "send_me_reset_password_instructions": "パスワードの再設定方法を送信する",
+      "resend_confirmation_instructions": "アカウント確認メール再送",
+      "resend_unlock_instructions": "アカウントのロック解除方法を再送する",
+      "delete": "アカウント削除",
+      "placeholder": {
+        "password": "半角英数字%{count}文字以上"
+      },
+      "modal": {
+        "delete": {
+          "title": "アカウントを削除してもよろしいですか？",
+          "text": "削除すると元に戻せません",
+          "enter": "削除する"
+        }
+      }
+    }
+  },
+  "post": {
+    "placeholder": "投稿を書く",
+    "modal": {
+      "delete": {
+        "title": "投稿を削除しますか？",
+        "text": "削除すると元に戻せません",
+        "enter": "削除する"
+      }
+    }
+  },
+  "dropzone": {
+    "drop": "%{item}をドロップ",
+    "select_or_drag_and_drop": "%{item}をドラッグ&ドロップ"
+  },
+  "model": {
+    "auth_provider": "認証プロバイダー",
+    "user": "ユーザー",
+    "post": "投稿",
+    "attributes": {
+      "auth_provider": {
+        "provider": "認証プロバイダー名"
+      },
+      "auth_provider/provider": {
+        "google_oauth2": "Google"
+      },
+      "post": {
+        "body": "本文",
+        "images": "画像",
+        "sent_at": "投稿日時"
+      },
+      "user": {
+        "email": "メールアドレス",
+        "language": "言語設定",
+        "password": "パスワード",
+        "remember_me": "ログインを記憶する",
+        "theme_mode": "外観モード",
+        "username": "ユーザー名"
+      },
+      "user/language": {
+        "ja": "日本語",
+        "en": "英語 - English"
+      },
+      "user/theme_mode": {
+        "device": "デバイス",
+        "light": "ライト",
+        "dark": "ダーク"
+      }
+    }
+  }
+}

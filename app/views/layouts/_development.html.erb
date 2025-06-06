@@ -1,0 +1,5 @@
+<%= any_login_here if defined?(AnyLogin) %>
+
+<% if (path = ENV.fetch('DEVELOPMENT_DEBUG_VIEW_FILE_PATH', nil)) %>
+  <%= render path %>
+<% end %>

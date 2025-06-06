@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= render "layouts/meta_common", options: { noindex: true, nofollow: true } %>
+    <%#= render "layouts/meta_common"　%>
+    <%= stylesheet_pack_tag 'application' %>
+    <%= javascript_pack_tag 'application' %>
+  </head>
+  <body>
+    <div id="page-loading" class=<%= user_theme_mode %>></div>
+    <%= yield %>
+  </body>
+</html>
+
+<%= render 'layouts/development' if Rails.env.development? %>

@@ -1,0 +1,5 @@
+rails: bundle exec rails s
+shakapacker: bin/shakapacker-dev-server
+sidekiq: bundle exec sidekiq
+locale: bin/rails json_translations:watch_yaml
+constants: bin/rails json_constants:watch

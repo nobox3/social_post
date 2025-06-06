@@ -1,0 +1,8 @@
+en:
+  pundit:
+    default: You cannot perform this action.
+    must_be_logged_in: You must be logged in.
+    # To create custom error messages, do the following.
+    # post_policy:
+    #   update?: 'You cannot edit this post!'
+    #   create?: 'You cannot create posts!'

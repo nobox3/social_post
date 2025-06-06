@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"declaration": false,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"jsx": "react-jsx",
+		"lib": ["es2022", "dom", "dom.iterable"],
+		"module": "es2022",
+		"moduleResolution": "node",
+		"noEmit": true,
+		"paths": {
+			"*": ["node_modules/*", "app/javascript/*"],
+			"react": ["./node_modules/@types/react"],
+			"@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
+		},
+		"resolveJsonModule": true,
+		"sourceMap": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "es2022"
+	},
+	"compileOnSave": false,
+	"exclude": [
+		"**/*.spec.ts",
+		"node_modules",
+		"vendor",
+		"public",
+		"**/setupEnzyme.ts",
+		"**/*.mock.ts",
+		"**/__*__"
+	]
+}

@@ -1,0 +1,47 @@
+ja:
+  activerecord:
+    errors:
+      messages:
+        invalid_transition: 無効な操作です
+        record_invalid: 'バリデーションに失敗しました: %{errors}'
+        restrict_dependent_destroy:
+          has_one: '%{record}が存在しているので削除できません'
+          has_many: '%{record}が存在しているので削除できません'
+        same_as_current_value: '現在の%{attribute}と同じです'
+        same_user: 同一のユーザーです
+        user_not_authorized: アクセス権限がありません
+
+        # Devise
+        not_saved:
+          one: エラーが発生したため %{resource} は保存されませんでした。
+          other: '%{count} 件のエラーが発生したため %{resource} は保存されませんでした。'
+
+        # Active Storage Validations
+        # https://github.com/igorkasyanchuk/active_storage_validations?tab=readme-ov-file#internationalization-i18n
+        content_type_invalid: は%{authorized_human_content_types}のどれかにしてください
+        content_type_spoofed: は無効なファイル形式です
+        dimension_max_not_included_in: は%{width} x %{height}ピクセル以下にしてください
+        file_size_not_less_than_or_equal_to: は%{max}以下にしてください
+        limit_max_exceeded:
+          zero: が添付されていません (最大%{max}ファイル)
+          one: が多すぎます (最大%{max}ファイル、%{count}ファイル)
+          other: が多すぎます (最大%{max}ファイル、%{count}ファイル)
+        media_metadata_missing: は有効なメディアファイルではありません
+      models:
+        auth_provider:
+          has_no_other_authentication_methods: 他のログイン方法がないため連携解除できません
+        user:
+          attributes:
+            email:
+              format: '%{message}'
+              invalid: 無効な%{attribute}のフォーマットです
+              taken: 既に登録されている%{attribute}です
+
+              # Devise
+              already_confirmed: '%{attribute}は既に登録済みです。ログインしてください。'
+              confirmation_period_expired: '%{attribute}の期限が切れました。%{period} までに確認する必要があります。 新しくリクエストしてください。'
+              expired: '%{attribute}の有効期限が切れました。新しくリクエストしてください。'
+              not_found: '%{attribute}は見つかりませんでした。'
+              not_locked: '%{attribute}はロックされていません。'
+            password:
+              invalid: は半角英数字で設定してください

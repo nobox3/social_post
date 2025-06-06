@@ -1,0 +1,31 @@
+$bg-light: #f7f7f8;
+$bg-dark: #15171a;
+
+#page-loading {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	width: 100vw;
+	height: 100vh;
+	user-select: none;
+	background: $bg-light;
+
+	&.device {
+		@media screen and (prefers-color-scheme: light) {
+			background: $bg-light;
+		}
+
+		@media screen and (prefers-color-scheme: dark) {
+			background: $bg-dark;
+		}
+	}
+
+	&.light {
+		background: $bg-light;
+	}
+
+	&.dark {
+		background: $bg-dark;
+	}
+}

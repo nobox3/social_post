@@ -1,0 +1,9 @@
+---
+:queues:
+  - default
+  - mailers
+  - action_cable
+  - sendgrid
+  - active_storage_analysis
+  - active_storage_purge
+  - low_priority

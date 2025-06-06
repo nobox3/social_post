@@ -1,0 +1,7 @@
+<p><%= mailer.translate(:greeting, recipient: @resource.email) %></p>
+
+<p><%= mailer.translate(:message) %></p>
+
+<p><%= mailer.translate(:instruction) %></p>
+
+<p><%= link_to mailer.translate(:link), unlock_url(@resource, unlock_token: @token) %></p>

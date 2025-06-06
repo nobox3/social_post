@@ -1,0 +1,28 @@
+ja:
+  model:
+    auth_provider: 認証プロバイダー
+    user: ユーザー
+    post: 投稿
+    attributes:
+      auth_provider:
+        provider: 認証プロバイダー名
+      auth_provider/provider:
+        google_oauth2: Google
+      post:
+        body: 本文
+        images: 画像
+        sent_at: 投稿日時
+      user:
+        email: メールアドレス
+        language: 言語設定
+        password: パスワード
+        remember_me: ログインを記憶する
+        theme_mode: 外観モード
+        username: ユーザー名
+      user/language:
+        ja: 日本語
+        en: 英語 - English
+      user/theme_mode:
+        device: デバイス
+        light: ライト
+        dark: ダーク

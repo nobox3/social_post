@@ -1,0 +1,40 @@
+ja:
+  activerecord:
+    attributes:
+      auth_provider:
+        provider: 認証プロバイダー
+        uid: UID
+      auth_provider/provider:
+        google_oauth2: Google
+      post:
+        body: 本文
+        images: 画像
+        sent_at: 投稿日時
+      user:
+        confirmation_sent_at: パスワード確認送信時刻
+        confirmation_token: パスワード確認用トークン
+        confirmed_at: パスワード確認時刻
+        created_at: 作成日
+        current_sign_in_at: 現在のログイン時刻
+        current_sign_in_ip: 現在のログインIPアドレス
+        email: メールアドレス
+        encrypted_password: 暗号化パスワード
+        failed_attempts: 失敗したログイン試行回数
+        language: 言語設定
+        last_sign_in_at: 最終ログイン時刻
+        last_sign_in_ip: 最終ログインIPアドレス
+        locked_at: ロック時刻
+        password: パスワード
+        remember_created_at: ログイン記憶時刻
+        remember_me: ログインを記憶する
+        reset_password_sent_at: パスワードリセット送信時刻
+        reset_password_token: パスワードリセット用トークン
+        sign_in_count: ログイン回数
+        theme_mode: 外観モード
+        unconfirmed_email: 未確認Eメール
+        unlock_token: ロック解除用トークン
+        updated_at: 更新日
+        username: ユーザー名
+    models:
+      user: ユーザー
+      post: 投稿

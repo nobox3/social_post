@@ -1,0 +1,30 @@
+en:
+  common_errors:
+    empty: Required input item
+    invalid_file: Please select %{type} file
+    invalid_field: 'Invalid %{field}'
+    invalid_password_format: Password must be alphanumeric characters
+    please_input_field: 'Please enter %{field}'
+    please_select_field: 'Please select %{field}'
+    please_make_sure_field: Please make sure %{field} is correct
+    too_large_file: 'File size must be less than %{size}'
+    too_large_size: Image size must be less than %{count}px x %{count}px
+    too_long: Please enter within %{count} characters
+    too_many: 'You can select up to %{count} %{item}'
+    too_short: Please enter at least %{count} characters
+    unknown: An unknown error has occurred
+  system_errors:
+    code_400: The page could not be displayed
+    code_400_sub: Bad Request
+    code_401: The page could not be displayed
+    code_401_sub: Unauthorized
+    code_402: Payment is required to view this page
+    code_402_sub: Payment required
+    code_404: The page was not found
+    code_404_sub: Not found
+    code_422: The page could not be displayed
+    code_422_sub: Unprocessable entity
+    code_500: The page could not be displayed
+    code_500_sub: Internal server error
+    default: System error has occurred
+    reload_this_page: Reload this page

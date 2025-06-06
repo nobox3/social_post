@@ -1,0 +1,28 @@
+en:
+  model:
+    auth_provider: Auth provider
+    user: User
+    post: Post
+    attributes:
+      auth_provider:
+        provider: Auth provider name
+      auth_provider/provider:
+        google_oauth2: Google
+      post:
+        body: Body
+        images: Images
+        sent_at: Sent at
+      user:
+        email: Email
+        language: Language setting
+        password: Password
+        remember_me: Remember me
+        theme_mode: Theme mode
+        username: Username
+      user/language:
+        ja: Japanese - 日本語
+        en: English
+      user/theme_mode:
+        device: Device
+        light: Light
+        dark: Dark
