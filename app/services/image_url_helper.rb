@@ -9,14 +9,10 @@ class ImageUrlHelper
     end
 
     def serialize_image(image, key)
-      { **image.slice(:id, :filename, :byte_size, :content_type), url: representation_url(image, key) }
+      { **image.slice(:id, :filename, :byte_size, :content_type), url: url(image, key) }
     end
 
     def url(image, key)
-      representation_url(image, key) if image.attached?
-    end
-
-    def representation_url(image, key)
       cdn_proxy_url(process_with_key(image, key))
     rescue StandardError => e
       Rails.logger.error(e.message)
@@ -24,7 +20,7 @@ class ImageUrlHelper
     end
 
     def public_url(image, key)
-      rails_storage_proxy_url(process_with_key(image, key)) if image.attached?
+      rails_storage_proxy_url(process_with_key(image, key))
     end
 
     def attach_from_url(image, url)

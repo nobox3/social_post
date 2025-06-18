@@ -20,17 +20,28 @@ module FileAttachable
         options[:validates] ||= {}
 
         if is_has_many
-          name = options[:name] || :images
+          name = options.fetch(:name, :images)
+          single_name = name.to_s.singularize
           has_many_attached(name, &block)
 
           define_method(:"serialize_#{name}") do |key = default_version_key|
             ImageUrlHelper.serialize_images(public_send(name), key)
           end
 
+          define_method(:"#{single_name}_url") do |key = default_version_key|
+            image = public_send(name).first
+            ImageUrlHelper.url(image, key) if image
+          end
+
+          define_method(:"#{single_name}_public_url") do |key = default_version_key|
+            image = public_send(name).first
+            ImageUrlHelper.public_url(image, key) if image
+          end
+
           options[:validates][:limit] ||= { max: DefaultValues::MAX_IMAGES_COUNT }
           options[:validates][:if] ||= -> { public_send(name).attached? }
         else
-          name = options[:name] || :image
+          name = options.fetch(:name, :image)
           has_one_attached(name, &block)
 
           define_method(:"serialize_#{name}") do |key = default_version_key|
@@ -38,11 +49,13 @@ module FileAttachable
           end
 
           define_method(:"#{name}_url") do |key = default_version_key|
-            ImageUrlHelper.url(public_send(name), key)
+            image = public_send(name)
+            ImageUrlHelper.url(image, key) if image.attached?
           end
 
           define_method(:"#{name}_public_url") do |key = default_version_key|
-            ImageUrlHelper.public_url(public_send(name), key)
+            image = public_send(name)
+            ImageUrlHelper.public_url(image, key) if image.attached?
           end
 
           define_method(:"attach_#{name}_from_url") do |url|
@@ -97,7 +110,7 @@ module FileAttachable
 
         def merge_options(options)
           opts = {}
-          opts[:format] = options[:format] || :webp
+          opts[:format] = options.fetch(:format, :webp)
           opts[:resize_to_limit] = options[:resize_to_limit] if options[:resize_to_limit]
           opts[:preprocessed] = options[:preprocessed].nil? ? preprocessed : options[:preprocessed]
           opts[:saver] = { strip: true, quality: 85 }

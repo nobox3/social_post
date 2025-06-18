@@ -8,7 +8,7 @@ module Api
     def viewer_image
       authorize(@attachment, policy_class: AttachmentPolicy)
 
-      render json: { url: ImageUrlHelper.representation_url(@attachment, :viewer) }
+      render json: { url: ImageUrlHelper.url(@attachment, :viewer) }
     end
 
     private
