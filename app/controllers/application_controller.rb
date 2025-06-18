@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include CsrfProtection
   include PunditAuthorization
   include I18nMessageHelper
   include Locale

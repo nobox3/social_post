@@ -2,6 +2,7 @@
 
 module Api
   class ApplicationController < ActionController::Base
+    include CsrfProtection
     include PunditAuthorization
     include I18nMessageHelper
     include Locale
