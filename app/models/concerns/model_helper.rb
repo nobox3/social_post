@@ -8,13 +8,16 @@ module ModelHelper
       PagyPagination.new(all, options)
     end
 
-    def generate_alphanumeric(length = 16)
-      SecureRandom.alphanumeric(length).downcase
+    def generate_alphanumeric(options = {})
+      value = SecureRandom.alphanumeric(options.fetch(:length, 16))
+      value.downcase! if options.fetch(:downcase, true)
+
+      "#{options.fetch(:prefix, '')}#{value}"
     end
 
-    def generate_unique_alphanumeric(column, length = 16)
+    def generate_unique_alphanumeric(column, options = {})
       loop do
-        value = generate_alphanumeric(length)
+        value = generate_alphanumeric(options)
 
         break value unless exists?(column => value)
       end
@@ -31,12 +34,12 @@ module ModelHelper
     end
   end
 
-  def generate_alphanumeric(length = 16)
-    self.class.generate_alphanumeric(length)
+  def generate_alphanumeric(options = {})
+    self.class.generate_alphanumeric(options)
   end
 
-  def assign_unique_alphanumeric(column, length = 16)
-    self[column] = self.class.generate_unique_alphanumeric(column, length)
+  def assign_unique_alphanumeric(column, options = {})
+    self[column] = self.class.generate_unique_alphanumeric(column, options)
   end
 
   def human_enum_name(attribute)

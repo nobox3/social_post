@@ -4,6 +4,11 @@ module ActsAsSluggable
   extend ActiveSupport::Concern
 
   included do
+    validates :slug, presence: true,
+                     length: { maximum: DefaultValues::MAX_SLUG_LENGTH },
+                     format: { with: DefaultValues::VALID_SLUG_REGEX, message: :invalid_slug }
+    validates :slug, uniqueness: true, on: :update
+
     before_validation -> { assign_unique_alphanumeric(:slug) }, if: -> { slug.blank? }, on: :create
   end
 

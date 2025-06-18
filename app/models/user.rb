@@ -115,7 +115,7 @@ class User < ApplicationRecord
 
     def prepare_to_create
       self.language = I18n.locale if language.blank?
-      self.username = "user-#{User.generate_alphanumeric(10)}" if username.blank?
+      assign_unique_alphanumeric(:username, prefix: 'user-', length: 10) if username.blank?
     end
 
     def send_registration_done_email
