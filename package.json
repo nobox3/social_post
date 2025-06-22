@@ -39,8 +39,7 @@
 		"eslint:fix": "eslint --fix 'app/javascript/src/**/*.{js,jsx,ts,tsx}'",
 		"stylelint": "stylelint 'app/javascript/**/*.{css,scss,jsx,tsx}'",
 		"stylelint:fix": "prettier --write 'frontend/**/*.{css,scss}; stylelint --fix 'app/javascript/**/*.{css,scss,jsx,tsx}'",
-		"prepare": "husky install",
-		"postinstall": "yarn typesync"
+		"prepare": "husky install"
 	},
 	"dependencies": {
 		"@babel/core": "^7.26.10",
@@ -142,7 +141,6 @@
 		"stylelint-config-recess-order": "^6.0.0",
 		"stylelint-config-standard-scss": "^14.0.0",
 		"typescript-eslint": "^8.29.1",
-		"typesync": "0.14.3",
 		"webpack-dev-server": "^5.2.1"
 	},
 	"version": "0.1.0",
