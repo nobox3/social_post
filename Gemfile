@@ -27,6 +27,7 @@ gem 'sassc-rails', '~> 2.1.2'
 gem 'sendgrid-ruby', '~> 6.7.0'
 gem 'shakapacker', '8.2.0'
 gem 'sidekiq', '~> 8.0.3'
+gem 'terser', '~> 1.2.6'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'validates_email_format_of', '~> 1.8.2'
 
