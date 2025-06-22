@@ -15,8 +15,12 @@ namespace :json_translations do
     end
   end
 
-  desc 'Start watching for YAML translations to be modified.'
-  task watch_yaml: :environment do |task|
-    FileHelper.auto_dump('json_translations:dump', task:, src_dirs:, only: %r{.yml$})
+  if Rails.env.development?
+    require 'development/watch_helper'
+
+    desc 'Start watching for YAML translations to be modified.'
+    task watch_yaml: :environment do |task|
+      WatchHelper.auto_dump('json_translations:dump', task:, src_dirs:, only: %r{.yml$})
+    end
   end
 end

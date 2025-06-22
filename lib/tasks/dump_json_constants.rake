@@ -30,8 +30,12 @@ namespace :json_constants do
     end
   end
 
-  desc 'Start watching for app/constants/default_values.rb to be modified.'
-  task watch: :environment do |task|
-    FileHelper.auto_dump('json_constants:dump', task:, src_dirs: 'app/constants', only: %r{^default_values.rb$})
+  if Rails.env.development?
+    require 'development/watch_helper'
+
+    desc 'Start watching for app/constants/default_values.rb to be modified.'
+    task watch: :environment do |task|
+      WatchHelper.auto_dump('json_constants:dump', task:, src_dirs: 'app/constants', only: %r{^default_values.rb$})
+    end
   end
 end
