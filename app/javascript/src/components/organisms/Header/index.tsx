@@ -14,7 +14,7 @@ const HEADER_ITEMS = [
 ]
 
 function HeaderIndex() {
-	const { currentUser } = useContext(CurrentUserContext)
+	const { currentUser, isSignedIn } = useContext(CurrentUserContext)
 	const [avatarAnchor, setAvatarAnchor] = useState<null | HTMLElement>(null)
 
 	return (
@@ -24,7 +24,7 @@ function HeaderIndex() {
 					<Toolbar disableGutters>
 						<Typography
 							component="a"
-							href={currentUser ? '/account/feed' : '/users/sign_in'}
+							href={isSignedIn ? '/account/feed' : '/users/sign_in'}
 							noWrap
 							sx={{
 								color: 'inherit', fontFamily: 'monospace', fontWeight: 'bold',
@@ -35,13 +35,13 @@ function HeaderIndex() {
 							SOCIAL POST
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
-							{currentUser && HEADER_ITEMS.map((item) => {
+							{isSignedIn && HEADER_ITEMS.map((item) => {
 								const { href, icon, label } = item
 
 								return <IconButton key={label} href={href}>{icon}</IconButton>
 							})}
 						</Box>
-						{currentUser ? (
+						{isSignedIn ? (
 							<>
 								<UserAvatar onClick={(e) => setAvatarAnchor(e.currentTarget)} user={currentUser} />
 								<AccountMenu anchorEl={avatarAnchor} setAnchorEl={setAvatarAnchor} />

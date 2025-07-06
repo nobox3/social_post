@@ -1,18 +1,27 @@
+import { createConsumer, Consumer, Subscription, Mixin, ChannelNameWithParams } from '@rails/actioncable'
 import { useState, ReactNode, useMemo, createContext, Dispatch, SetStateAction, useCallback } from 'react'
 
 import CurrentUser from 'src/core/types/CurrentUser'
 import User from 'src/core/types/User'
 
+export type ActionCableChannel = Subscription<Consumer> & Mixin
+
 type CurrentUserProviderValue = {
+	createSubscription: (channel: ChannelNameWithParams, mixin?: Mixin) => ActionCableChannel | null
 	currentUser: CurrentUser | null
+	currentUserId: number | null
 	isCurrentUser: (target: User) => boolean
+	isSignedIn: boolean
 	mergeCurrentUser: (properties: Partial<CurrentUser>) => void
 	setCurrentUser: Dispatch<SetStateAction<CurrentUser | null>>
 }
 
 export const CurrentUserContext = createContext<CurrentUserProviderValue>({
+	createSubscription: () => null,
 	currentUser: null,
+	currentUserId: null,
 	isCurrentUser: () => false,
+	isSignedIn: false,
 	mergeCurrentUser: () => {},
 	setCurrentUser: () => {},
 })
@@ -24,6 +33,16 @@ type Props = {
 
 function CurrentUserProvider({ children, user }: Props) {
 	const [currentUser, setCurrentUser] = useState<CurrentUser | null>(user ?? null)
+	const currentUserId = currentUser?.id ?? null
+	const isSignedIn = !!currentUserId
+	const consumer = useMemo(() => (isSignedIn ? createConsumer() : null), [isSignedIn])
+
+	const createSubscription = useCallback(
+		(channel: ChannelNameWithParams, mixin: Mixin = {}): ActionCableChannel | null => {
+			return consumer?.subscriptions.create<Mixin>(channel, { ...mixin }) ?? null
+		},
+		[consumer],
+	)
 
 	const mergeCurrentUser = useCallback((properties: Partial<CurrentUser>) => {
 		setCurrentUser((current) => {
@@ -36,13 +55,16 @@ function CurrentUserProvider({ children, user }: Props) {
 	}, [])
 
 	const isCurrentUser = useCallback(
-		(target: User) => !!(currentUser && target?.id === currentUser.id),
-		[currentUser],
+		(target: User) => !!currentUserId && target?.id === currentUserId,
+		[currentUserId],
 	)
 
 	const providerValue = useMemo(() => {
-		return { currentUser, isCurrentUser, mergeCurrentUser, setCurrentUser }
-	}, [currentUser, isCurrentUser, mergeCurrentUser])
+		return {
+			createSubscription, currentUser, currentUserId,
+			isCurrentUser, isSignedIn, mergeCurrentUser, setCurrentUser,
+		}
+	}, [createSubscription, currentUser, currentUserId, isCurrentUser, isSignedIn, mergeCurrentUser])
 
 	return (
 		<CurrentUserContext.Provider value={providerValue}>
