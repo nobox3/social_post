@@ -3,11 +3,17 @@
     "ja": "ja-JP",
     "en": "en-US"
   },
+  "PERMITTED_SEARCH_PARAMS": [
+    "page",
+    "s",
+    "k"
+  ],
   "MAX_SLUG_LENGTH": 30,
   "VALID_SLUG_REGEX": "(?-mix:\\A[a-z0-9_-]+\\z)",
   "MAX_IMAGES_COUNT": 3,
   "MAX_TEXTAREA_COUNT": 2000,
   "META_MAX_TITLE_LENGTH": 60,
+  "META_MAX_DESCRIPTION_LENGTH": 160,
   "ACCEPTED_IMAGE_TYPES": [
     "image/webp",
     "image/png",
@@ -16,13 +22,6 @@
   ],
   "MAX_IMAGE_FILE_SIZE": 31457280,
   "VALID_PASSWORD_REGEX": "(?-mix:\\A[a-zA-Z0-9]+\\z)",
-  "MAX_IMAGE_DIMENSION_SIZE": 7680,
   "MAX_TEXT_COUNT": 200,
-  "PERMITTED_SEARCH_PARAMS": [
-    "page",
-    "s",
-    "k"
-  ],
-  "META_MAX_DESCRIPTION_LENGTH": 160,
-  "SITE_NAME": "Social Post"
+  "MAX_IMAGE_DIMENSION_SIZE": 7680
 }

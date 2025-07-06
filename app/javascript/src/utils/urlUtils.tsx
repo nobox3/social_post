@@ -45,15 +45,22 @@ export function splitPath(path: string, index: number | null = null): string | s
 	return index === null ? segments : segments[index]
 }
 
-export function removeSegments(path: string, segments: string | string[]) {
-	return path.replace(
-		new RegExp(`/(${typeof segments === 'string' ? segments : segments.join('|')})`, 'g'),
-		'',
-	)
-}
+export function toDotChainPath(path: string, replacements?: Record<number, string>) {
+	const str = path.substring(1)
 
-export function toDotChainPath(path: string) {
-	return path.substring(1).replace(/\//g, '.')
+	if (!replacements) {
+		return str.replace(/\//g, '.')
+	}
+
+	const segments = str.split('/')
+
+	Object.entries(replacements).forEach(([at, replacement]) => {
+		const index = Number(at)
+
+		segments[index] && (segments[index] = replacement)
+	})
+
+	return segments.filter(Boolean).join('.')
 }
 
 export type OnPathChangeParams = {

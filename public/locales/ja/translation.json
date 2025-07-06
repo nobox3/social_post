@@ -1,60 +1,63 @@
 {
   "meta": {
+    "title": "デモサイト",
     "default": {
-      "title": "Demo site",
-      "description": "Demo site for portfolio"
+      "description": "Demo site for portfolio",
+      "keywords": ""
     },
     "account": {
       "feed": {
-        "title": "フィード",
+        "page_name": "フィード",
         "description": "あなたがフォローしているユーザーの最新の投稿を表示します"
       },
       "posts": {
-        "title": "投稿一覧",
+        "page_name": "投稿一覧",
         "description": "投稿一覧を表示します"
       },
       "followings": {
-        "title": "フォロー中",
+        "page_name": "フォロー中",
         "description": "フォロー中のユーザー一覧を表示します"
       },
       "followers": {
-        "title": "フォロワー",
+        "page_name": "フォロワー",
         "description": "フォロワー一覧を表示します"
       },
       "profile": {
-        "title": "プロフィール",
+        "page_name": "プロフィール",
         "description": "プロフィールを表示します"
       },
       "register_info": {
-        "title": "登録情報",
+        "page_name": "登録情報",
         "description": "登録情報を表示します"
       },
       "app_settings": {
-        "title": "設定",
+        "page_name": "設定",
         "description": "設定を表示します"
       }
     },
     "users": {
-      "title": "%{user_name}さんの投稿一覧",
-      "description": "%{user_name}さんの投稿一覧を表示します",
-      "posts": {
-        "title": "%{user_name}さんの投稿一覧",
-        "description": "%{user_name}さんの投稿一覧を表示します"
-      },
-      "followings": {
-        "title": "%{user_name}さんのフォロー中",
-        "description": "%{user_name}さんのフォロー中のユーザー一覧を表示します"
-      },
-      "followers": {
-        "title": "%{user_name}さんのフォロワー",
-        "description": "%{user_name}さんのフォロワー一覧を表示します"
+      "id": {
+        "page_name": "%{user_name}さんの投稿一覧",
+        "description": "%{user_name}さんの投稿一覧を表示します",
+        "posts": {
+          "page_name": "%{user_name}さんの投稿一覧",
+          "description": "%{user_name}さんの投稿一覧を表示します"
+        },
+        "followings": {
+          "page_name": "%{user_name}さんのフォロー中",
+          "description": "%{user_name}さんのフォロー中のユーザー一覧を表示します"
+        },
+        "followers": {
+          "page_name": "%{user_name}さんのフォロワー",
+          "description": "%{user_name}さんのフォロワー一覧を表示します"
+        }
       },
       "sign_in": {
-        "title": "ログイン",
+        "page_name": "ログイン",
         "description": "アカウントにログインします"
       },
       "sign_up": {
-        "title": "アカウント登録",
+        "page_name": "アカウント登録",
         "description": "新しいアカウントを作成します"
       }
     }

@@ -6,6 +6,6 @@ class UserDecorator < ApplicationDecorator
   end
 
   def i18n_params_for_path
-    { removed_segments: resource.slug, interpolation: { user_name: resource.username } }
+    { path_replacements: { 1 => 'id' }, interpolation: { user_name: resource.username } }
   end
 end

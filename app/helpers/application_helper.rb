@@ -2,17 +2,22 @@
 
 module ApplicationHelper
   def i18n_meta_for_path
-    i18n_params_for_path = props[:i18n_params_for_path]
+    key_for_path = i18n_params_for_path[:key]
+    options = { **i18n_params_for_path[:interpolation], scope: [:meta, key_for_path], default: '' }
 
-    t(i18n_params_for_path[:key],
-      **i18n_params_for_path[:interpolation],
-      deep_interpolation: true,
-      scope: :meta,
-      default: :default)
+    i18n_meta = %i[description keywords].index_with do |item_key|
+      translate_meta(item_key, options).presence || t(item_key, scope: 'meta.default')
+    end
+
+    page_name = translate_meta(:page_name, options)
+    title = t('meta.title')
+    i18n_meta[:title] = page_name.present? ? "#{page_name} | #{title}" : title
+    i18n_meta
   end
 
-  def sanitize_description(text)
-    text.to_s.gsub(/\s+/, ' ').strip
+  def translate_meta(item_key, options)
+    # value が空のこともあるので key による fallback は使用しない
+    t(item_key, **options).presence || t(item_key, **options, scope: options[:scope] + [:default])
   end
 
   def sanitized_canonical_url
@@ -25,21 +30,14 @@ module ApplicationHelper
   def custom_meta_tags(options = {})
     i18n_meta = i18n_meta_for_path
     title = i18n_meta[:title]
-    description = sanitize_description(i18n_meta[:description])
-
-    # meta = decorator&.meta
-    # image = meta[:image].presence || image_url('/images/ogp_share.png')
-
+    description = i18n_meta[:description].to_s.gsub(/\s+/, ' ').strip
     canonical_url = sanitized_canonical_url
-    site_name = DefaultValues::SITE_NAME
 
     # https://github.com/kpumuk/meta-tags/
     display_meta_tags({
-      site: site_name,
       title:,
       description:,
-      keywords: '',
-      reverse: true,
+      keywords: i18n_meta[:keywords],
       charset: 'utf-8',
       canonical: canonical_url,
       # icon: [
@@ -47,10 +45,10 @@ module ApplicationHelper
       #   { href: '/apple-touch-icon.png', rel: 'apple-touch-icon', sizes: '180x180', type: 'image/jpg' },
       # ],
       og: {
-        site_name:,
+        site_name: title,
         title:,
         description:,
-        # image:,
+        # image: (decorator&.meta || {})[:image].presence || image_url('/images/ogp_share.webp'),
         type: 'website',
         url: canonical_url,
         locale: DefaultValues::LOCALE_LONG[I18n.locale],
@@ -58,9 +56,6 @@ module ApplicationHelper
       twitter: {
         card: 'summary',
         # site: '',
-        title:,
-        description:,
-        # image:,
       },
     }.merge(options || {}))
   end

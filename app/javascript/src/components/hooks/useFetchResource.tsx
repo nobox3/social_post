@@ -29,7 +29,7 @@ type UseFetchResourceParams<T extends string, R, Id> = {
 	apiServices?: Partial<Record<T, ApiService<R>>>
 	apiServicesWithId?: Partial<Record<T, ApiServiceWithId<R, Id>>>
 	availableSearchParamsKeys?: readonly string[]
-	i18nMetaPrams?: I18nMetaParams
+	i18nMetaParams?: I18nMetaParams
 	initialResult: R
 	resourceKeyToPath?: Record<T, string> | string | ((targetResourceKey: T, id?: Id) => string)
 }
@@ -38,7 +38,7 @@ function useFetchResource<T extends string, R, Id = number>({
 	apiServices,
 	apiServicesWithId,
 	availableSearchParamsKeys = DEFAULT_AVAILABLE_SEARCH_PARAMS_KEYS,
-	i18nMetaPrams,
+	i18nMetaParams,
 	initialResult,
 	resourceKeyToPath = '',
 }: UseFetchResourceParams<T, R, Id>) {
@@ -92,12 +92,12 @@ function useFetchResource<T extends string, R, Id = number>({
 					path = resourceKeyToPath?.[targetResourceKey]
 				}
 
-				path && updatePathHistoryWithMeta(path, { i18nMetaPrams, searchParams: newParams })
+				path && updatePathHistoryWithMeta(path, { i18nMetaParams, searchParams: newParams })
 				setFetchResult(result)
 				setApiSearchParams(newParams)
 			}
 		}, [
-			apiSearchParams, fetchTargetResource, i18nMetaPrams,
+			apiSearchParams, fetchTargetResource, i18nMetaParams,
 			resourceKeyToPath, updatePathHistoryWithMeta,
 		],
 	)

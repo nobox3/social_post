@@ -1,45 +1,47 @@
 en:
   meta:
+    title: Demo Site
     default:
-      title: Demo site
       description: Demo site for portfolio
+      keywords: ''
     account:
       feed:
-        title: Feed
+        page_name: Feed
         description: Displays the latest posts from users you follow
       posts:
-        title: Posts
+        page_name: Posts
         description: Displays a list of posts
       followings:
-        title: Following
+        page_name: Following
         description: Displays a list of users you follow
       followers:
-        title: Followers
+        page_name: Followers
         description: Displays a list of your followers
       profile:
-        title: Profile
+        page_name: Profile
         description: Displays your profile
       register_info:
-        title: Registration Info
+        page_name: Registration Info
         description: Displays your registration information
       app_settings:
-        title: Settings
+        page_name: Settings
         description: Displays your settings
     users:
-      title: "%{user_name}'s Posts"
-      description: Displays a list of posts by %{user_name}
-      posts:
-        title: "%{user_name}'s Posts"
+      id:
+        page_name: "%{user_name}'s Posts"
         description: Displays a list of posts by %{user_name}
-      followings:
-        title: "%{user_name}'s Following"
-        description: Displays a list of users %{user_name} follows
-      followers:
-        title: "%{user_name}'s Followers"
-        description: Displays a list of %{user_name}'s followers
+        posts:
+          page_name: "%{user_name}'s Posts"
+          description: Displays a list of posts by %{user_name}
+        followings:
+          page_name: "%{user_name}'s Following"
+          description: Displays a list of users %{user_name} follows
+        followers:
+          page_name: "%{user_name}'s Followers"
+          description: Displays a list of %{user_name}'s followers
       sign_in:
-        title: Sign In
+        page_name: Sign In
         description: Sign in to your account
       sign_up:
-        title: Sign Up
+        page_name: Sign Up
         description: Create a new account

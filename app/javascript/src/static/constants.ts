@@ -9,7 +9,6 @@ export const {
 	MAX_IMAGES_COUNT,
 	MAX_TEXT_COUNT,
 	MAX_TEXTAREA_COUNT,
-	SITE_NAME,
 } = backendConstants
 
 export const MIN_PASSWORD_LENGTH = 8

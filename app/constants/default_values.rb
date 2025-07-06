@@ -15,7 +15,6 @@ module DefaultValues
   META_MAX_TITLE_LENGTH = 60
   META_MAX_DESCRIPTION_LENGTH = 160
 
-  SITE_NAME = 'Social Post'
   PERMITTED_SEARCH_PARAMS = %w[page s k].freeze
   LOCALE_LONG = { ja: 'ja-JP', en: 'en-US' }.freeze
 end

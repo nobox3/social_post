@@ -17,9 +17,9 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
   around_action :render_common, unless: :devise_controller?
 
-  attr_reader :props, :decorator
+  attr_reader :decorator
 
-  helper_method :props, :props_on_render, :decorator
+  helper_method :i18n_params_for_path, :props_on_render, :decorator
 
   protected
 
@@ -65,17 +65,31 @@ class ApplicationController < ActionController::Base
     end
 
     def i18n_params_for_path
+      return @i18n_params_for_path if @i18n_params_for_path
+
       path = request.path
+      key = nil
       interpolation = {}
 
-      if (decorator_params = decorator&.i18n_params_for_path)
-        interpolation = decorator_params[:interpolation]
-        segments = decorator_params[:removed_segments]
-
-        path.gsub!(%r{/(#{Array.wrap(segments).join('|')})}, '')
+      if path == root_path
+        key = 'top'
+      elsif (decorator_params = decorator&.i18n_params_for_path).present?
+        key = to_dot_chain_path(path, decorator_params[:path_replacements])
+        interpolation = decorator_params[:interpolation] if decorator_params[:interpolation]
       end
 
-      { key: path[1..].tr('/', '.').presence || :default, interpolation: }
+      @i18n_params_for_path = { key: key || to_dot_chain_path(path), interpolation: }
+    end
+
+    def to_dot_chain_path(path, replacements = nil)
+      path = path[1..]
+
+      return path.tr('/', '.') if replacements.blank?
+
+      segments = path.split('/')
+
+      replacements.each { |at, replacement| segments[at] = replacement if segments[at] }
+      segments.compact.join('.')
     end
 
     def render_common

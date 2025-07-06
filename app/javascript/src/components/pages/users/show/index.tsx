@@ -63,22 +63,22 @@ function UsersShowIndex({ user, ...props }: Props) {
 
 	const {
 		followers_count = 0, followings_count = 0,
-		id: user_id = 0, slug = '', url = '', username = '',
+		id: user_id = 0, url = '', username = '',
 	} = user ?? {}
 
-	const i18nMetaPrams = useMemo<I18nMetaParams>(() => {
-		return { interpolation: { user_name: username }, removedSegments: slug }
-	}, [slug, username])
+	const i18nMetaParams = useMemo<I18nMetaParams>(() => {
+		return { interpolation: { user_name: username }, pathReplacements: { 1: 'id' } }
+	}, [username])
 
 	useEffect(() => {
 		if (window.location.pathname === url) {
-			updatePathHistoryWithMeta(`${url}/posts`, { i18nMetaPrams, isReplace: true })
+			updatePathHistoryWithMeta(`${url}/posts`, { i18nMetaParams, isReplace: true })
 		}
-	}, [i18nMetaPrams, updatePathHistoryWithMeta, url])
+	}, [i18nMetaParams, updatePathHistoryWithMeta, url])
 
 	const { fetchResult, handleFetchResource } = useFetchResource<MenuItemKey, Props>({
 		apiServicesWithId: FETCH_RESOURCE_SERVICES,
-		i18nMetaPrams,
+		i18nMetaParams,
 		initialResult: props,
 		resourceKeyToPath: url,
 	})
