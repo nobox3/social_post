@@ -7,6 +7,7 @@ ruby '3.3.4'
 gem 'rails', '7.2.2.1'
 
 gem 'active_storage_validations', '~> 2.0.3'
+gem 'aws-sdk-s3', '~> 1.192.0', require: false
 gem 'bootsnap', '~> 1.18.6', require: false
 gem 'discard', '~> 1.4.0'
 gem 'devise', '~> 4.9.4'
