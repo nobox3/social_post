@@ -32,6 +32,11 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
+# Ignore sockets, but keep the directory to create socket file for Puma.
+/tmp/sockets/*
+!/tmp/sockets/
+!/tmp/sockets/.keep
+
 /public/assets
 .byebug_history
 

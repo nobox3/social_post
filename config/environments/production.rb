@@ -23,23 +23,23 @@ Rails.application.configure do
   # config.require_master_key = true
 
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
-  # config.public_file_server.enabled = false
+  config.public_file_server.enabled = false
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
 
-  # Do not fall back to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
-
   config.assets.js_compressor = :terser
   config.assets.terser = { compress: { drop_console: true } }
+
+  # Do not fall back to assets pipeline if a precompiled asset is missed.
+  config.assets.compile = false
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
-  # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
+  config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
@@ -54,7 +54,7 @@ Rails.application.configure do
   # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = ENV.fetch('FORCE_SSL', 'true') == 'true'
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -77,6 +77,7 @@ Rails.application.configure do
 
     config.cache_store = :redis_cache_store, {
       url: redis_url,
+      ssl: config.force_ssl,
       connect_timeout: 30,
       read_timeout: 0.2,
       write_timeout: 0.2,
@@ -92,17 +93,17 @@ Rails.application.configure do
   end
 
   config.session_store session_store,
-      expire_after: 1.month,
-      key: "_#{Rails.application.class.module_parent.name.downcase}_session",
-      secure: ENV.fetch('USE_SECURE_SESSION', nil).present?
+                       expire_after: 1.month,
+                       key: "_#{Rails.application.class.module_parent.name.downcase}_session"
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
   # config.active_job.queue_name_prefix = "test_app_production"
 
   config.action_mailer.perform_caching = false
-
   config.action_mailer.default_url_options = { host: ENV['APP_HOST'], protocol: 'https' }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :sendgrid if ENV.fetch('SENDGRID_API_KEY', nil).present?
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -117,6 +118,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.hosts << ENV['APP_HOST']
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
