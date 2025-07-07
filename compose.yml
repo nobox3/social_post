@@ -1,0 +1,75 @@
+volumes:
+  db-data:
+  cache-store:
+  sockets:
+services:
+  web:
+    environment:
+      APP_HOST: localhost
+      REDIS_URL: redis://redis:6379/1
+      SECRET_KEY_BASE: dummy
+    build:
+      context: .
+      target: web
+    volumes:
+      - type: volume
+        source: db-data
+        target: /rails/tmp/db/postgres_data
+        volume:
+          nocopy: true
+      - type: volume
+        source: cache-store
+        target: /rails/tmp/data/redis
+        volume:
+          nocopy: true
+      - type: volume
+        source: sockets
+        target: /rails/tmp/sockets
+        volume:
+          nocopy: true
+    depends_on:
+      - db
+      - redis
+  nginx:
+    build:
+      context: .
+    volumes:
+      - type: volume
+        source: sockets
+        target: /var/run/sockets
+        volume:
+          nocopy: true
+    depends_on:
+      - web
+    ports:
+      - 3020:80
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./nginx/nginx.conf
+          target: /etc/nginx/nginx.conf
+        - action: sync+restart
+          path: ./nginx/default.conf
+          target: /etc/nginx/templates/default.conf.template
+  db:
+    environment:
+      POSTGRES_PASSWORD: postgres
+    image: postgres:17.5-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+  redis:
+    image: "redis:8.0.2-alpine"
+    ports:
+      - "6379:6379"
+    volumes:
+      - type: volume
+        source: cache-store
+        target: /data
+        volume:
+          nocopy: true
