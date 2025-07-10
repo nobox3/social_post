@@ -156,19 +156,20 @@ Rails.application.routes.draw do
     end
   end
 
+  if Rails.env.local?
   direct :cdn_proxy do |representation|
-    if Rails.env.local?
       route_for(:rails_storage_proxy, representation, port: ENV.fetch('PORT', 3000))
+    end
+
+    mount Sidekiq::Web, at: '/sidekiq'
+    mount LetterOpenerWeb::Engine, at: '/letter_opener'
     else
+    direct :cdn_proxy do |representation|
       "https://#{ENV.fetch('ASSET_HOST')}/#{representation.key}"
     end
+
+    authenticate :user, ->(u) { u.admin? } do
+      mount Sidekiq::Web, at: '/sidekiq'
+    end
   end
-
-  # authenticate :user, ->(u) { u.admin? } do
-  #   mount Sidekiq::Web, at: '/sidekiq'
-  # end
-
-  mount Sidekiq::Web, at: '/sidekiq'
-
-  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
