@@ -62,6 +62,7 @@
 #                                       PUT      /api/posts/:id(.:format)                                                                          api/posts#update
 #                                       DELETE   /api/posts/:id(.:format)                                                                          api/posts#destroy
 #           viewer_image_api_attachment GET      /api/attachments/:id/viewer_image(.:format)                                                       api/attachments#viewer_image
+#                                health GET      /health(.:format)                                                                                 Inline handler (Proc/Lambda)
 #                           sidekiq_web          /sidekiq                                                                                          Sidekiq::Web
 #                     letter_opener_web          /letter_opener                                                                                    LetterOpenerWeb::Engine
 #                             any_login          /any_login                                                                                        AnyLogin::Engine
@@ -156,14 +157,16 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/health', to: ->(_env) { [200, {}, ['']] }
+
   if Rails.env.local?
-  direct :cdn_proxy do |representation|
+    direct :cdn_proxy do |representation|
       route_for(:rails_storage_proxy, representation, port: ENV.fetch('PORT', 3000))
     end
 
     mount Sidekiq::Web, at: '/sidekiq'
     mount LetterOpenerWeb::Engine, at: '/letter_opener'
-    else
+  else
     direct :cdn_proxy do |representation|
       "https://#{ENV.fetch('ASSET_HOST')}/#{representation.key}"
     end
