@@ -3,7 +3,7 @@
 - Ruby 3.3.4
 - Rails 7.2.2.1
 - Redis 8.0.2 +
-- Postgresql 15 +
+- Postgresql 16.6
 - libvips 8.16.1 +
 - node 22.14.0
 - yarn 4.9.1 +

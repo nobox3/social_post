@@ -80,7 +80,7 @@ test:
 #
 production:
   <<: *default
-  database: social_post_production
+  database: <%= ENV.fetch('DATABASE_NAME', 'social_post_production') %>
   host: <%= ENV.fetch('DATABASE_HOST', 'db') %>
-  username: <%= ENV.fetch('DATABASE_USER', 'postgres') %>
-  password: <%= ENV.fetch('DATABASE_PASS', 'postgres') %>
+  username: <%= ENV.fetch('DATABASE_USERNAME', '') %>
+  password: <%= ENV.fetch('DATABASE_PASSWORD', '') %>
