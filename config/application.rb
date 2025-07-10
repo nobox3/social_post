@@ -24,10 +24,10 @@ module SocialPost
 
     config.active_support.message_serializer = :json
 
-    config.time_zone = ENV.fetch("TIME_ZONE", "UTC")
+    config.time_zone = ENV.fetch("TIME_ZONE", "Tokyo")
     config.active_record.default_timezone = :local
 
-    config.i18n.default_locale = ENV.fetch("DEFAULT_LOCALE", :en).to_sym
+    config.i18n.default_locale = ENV.fetch("DEFAULT_LOCALE", :ja).to_sym
     config.i18n.available_locales = %i[en ja]
     config.i18n.load_path += Dir[Rails.root.join("config", "locales_common", "**", "*.yml")]
     config.active_model.i18n_customize_full_message = true
