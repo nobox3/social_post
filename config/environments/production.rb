@@ -49,12 +49,14 @@ Rails.application.configure do
   # config.action_cable.url = "wss://example.com/cable"
   # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
 
+  force_ssl = ENV.fetch('FORCE_SSL', 'true') == 'true'
+
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
-  config.assume_ssl = true
+  config.assume_ssl = force_ssl
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = ENV.fetch('FORCE_SSL', 'true') == 'true'
+  config.force_ssl = force_ssl
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -77,7 +79,7 @@ Rails.application.configure do
 
     config.cache_store = :redis_cache_store, {
       url: redis_url,
-      ssl: config.force_ssl,
+      ssl: force_ssl,
       connect_timeout: 30,
       read_timeout: 0.2,
       write_timeout: 0.2,
