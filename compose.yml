@@ -5,14 +5,16 @@ volumes:
 services:
   web:
     environment:
-      APP_HOST: localhost
-      SECRET_KEY_BASE: dummy
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: postgres
-      REDIS_URL: redis://redis:6379/1
+      - APP_HOST=${APP_HOST:-localhost}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-dummy}
+      - DATABASE_USERNAME=${DATABASE_USERNAME:-postgres}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD:-postgres}
+      - REDIS_URL=${REDIS_URL:-redis://localhost:6379/1}
+      - FORCE_SSL=${FORCE_SSL:-false}
     build:
       context: .
       target: web
+    # command: bundle exec rails server
     volumes:
       - type: volume
         source: db-data
@@ -44,7 +46,7 @@ services:
     depends_on:
       - web
     ports:
-      - 3020:80
+      - ${PORT:-3000}:80
     develop:
       watch:
         - action: sync+restart

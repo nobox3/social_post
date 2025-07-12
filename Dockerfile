@@ -43,7 +43,7 @@ RUN corepack enable yarn && yarn workspaces focus --production && yarn install -
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails shakapacker:compile "json_translations:dump[minify]"
 
 # Remove unnecessary files to reduce image size
-RUN rm -rf node_modules package.json yarn.lock .yarnrc.yml .yarn tsconfig.json babel.config.mjs app/javascript
+RUN rm -rf node_modules yarn.lock .yarnrc.yml .yarn tsconfig.json babel.config.mjs app/javascript
 
 # ------------------------------
 #  Final stage for Rails app
@@ -53,7 +53,7 @@ FROM base AS web
 
 # Install packages needed for deployment
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libvips postgresql-client gosu && \
+    apt-get install --no-install-recommends -y curl libvips postgresql-client redis-tools gosu && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
