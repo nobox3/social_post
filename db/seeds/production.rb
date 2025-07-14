@@ -25,7 +25,7 @@ puts 'Create users...'
 
 fixture_path = Rails.root.join('spec', 'fixtures')
 
-users = Array.new(1) do |i|
+users = Array.new(20) do |i|
   num = i + 1
 
   user = User.create!(
