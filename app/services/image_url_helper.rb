@@ -15,7 +15,7 @@ class ImageUrlHelper
     def url(image, key)
       cdn_proxy_url(process_with_key(image, key))
     rescue StandardError => e
-      Rails.logger.error(e.message)
+      Rails.logger.warn(e.message)
       nil
     end
 
@@ -30,7 +30,7 @@ class ImageUrlHelper
         end
       end
     rescue StandardError => e
-      Rails.logger.error(e.message)
+      Rails.logger.warn(e.message)
       nil
     end
 
