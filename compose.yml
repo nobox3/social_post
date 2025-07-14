@@ -9,12 +9,15 @@ services:
       - SECRET_KEY_BASE=${SECRET_KEY_BASE:-dummy}
       - DATABASE_USERNAME=${DATABASE_USERNAME:-postgres}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD:-postgres}
-      - REDIS_URL=${REDIS_URL:-redis://localhost:6379/1}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/1}
       - FORCE_SSL=${FORCE_SSL:-false}
+      - ENABLE_BASIC_AUTH=${ENABLE_BASIC_AUTH:-false}
+      - STORAGE_SERVICE=${STORAGE_SERVICE:-local}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
     build:
       context: .
       target: web
-    # command: bundle exec rails server
     volumes:
       - type: volume
         source: db-data
@@ -35,6 +38,8 @@ services:
       - db
       - redis
   nginx:
+    environment:
+      - VPC_CIDR=${VPC_CIDR:-10.0.0.0/16}
     build:
       context: .
     volumes:
@@ -57,10 +62,10 @@ services:
           target: /etc/nginx/templates/default.conf.template
   db:
     environment:
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD:-postgres}
     image: postgres:16.6-alpine
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - type: volume
         source: db-data
@@ -68,12 +73,17 @@ services:
         volume:
           nocopy: true
   redis:
-    image: "redis:8.0.2-alpine"
+    image: redis:8.0.2-alpine
     ports:
-      - "6379:6379"
+      - 6379:6379
     volumes:
       - type: volume
         source: cache-store
         target: /data
         volume:
           nocopy: true
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: ${VPC_CIDR:-10.0.0.0/16}

@@ -57,8 +57,9 @@ stylelint.config.mjs
 .rubocop.yml
 .erb-lint.yml
 
-spec
 .rspec
+spec/*
+!spec/fixtures
 
 Procfile.dev
 .DS_Store
