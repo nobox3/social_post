@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   respond_to :html, :json
 
-  before_action :basic_auth, unless: -> { Rails.env.local? }
+  before_action :basic_auth, if: -> { !Rails.env.local? && ENV.fetch('ENABLE_BASIC_AUTH', nil) == 'true' }
   # About store_location_for:
   # https://github.com/heartcombo/devise/wiki/How-To:-Redirect-back-to-current-page-after-sign-in,-sign-out,-sign-up,-update
   before_action -> { store_location_for(:user, request.fullpath) }, if: :storable_location?
