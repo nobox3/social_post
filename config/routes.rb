@@ -160,15 +160,25 @@ Rails.application.routes.draw do
   get '/health', to: ->(_env) { [200, {}, ['']] }
 
   if Rails.env.local?
+    port = ENV.fetch('PORT', 3000)
+
     direct :cdn_proxy do |representation|
-      route_for(:rails_storage_proxy, representation, port: ENV.fetch('PORT', 3000))
+      route_for(:rails_storage_proxy, representation, port:)
     end
 
     mount Sidekiq::Web, at: '/sidekiq'
     mount LetterOpenerWeb::Engine, at: '/letter_opener'
   else
-    direct :cdn_proxy do |representation|
-      "https://#{ENV.fetch('ASSET_HOST')}/#{representation.key}"
+    cdn_host = ENV.fetch('CDN_HOST', nil)
+
+    if cdn_host.present?
+      direct :cdn_proxy do |representation|
+        "https://#{cdn_host}/#{representation.key}"
+      end
+    else
+      direct :cdn_proxy do |representation|
+        route_for(:rails_storage_proxy, representation)
+      end
     end
 
     authenticate :user, ->(u) { u.admin? } do
