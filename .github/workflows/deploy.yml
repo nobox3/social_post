@@ -87,13 +87,11 @@ jobs:
           task-definition-family: ${{ env.APP_ID }}
           container-name: web
           image: ${{ env.IMAGE_WEB }}
-          environment-variables: |
-            AWS_REGION=${{ env.AWS_REGION }}
-            ENABLE_BASIC_AUTH=true
-            STORAGE_SERVICE=amazon
+          environment-variables: AWS_REGION=${{ env.AWS_REGION }}
           secrets: |
             APP_HOST=${{ env.SSM_PARAMETER_PATH }}/APP_HOST
             SECRET_KEY_BASE=${{ env.SSM_PARAMETER_PATH }}/SECRET_KEY_BASE
+            ENABLE_BASIC_AUTH=${{ env.SSM_PARAMETER_PATH }}/ENABLE_BASIC_AUTH
             BASIC_AUTH_USERNAME=${{ env.SSM_PARAMETER_PATH }}/BASIC_AUTH_USERNAME
             BASIC_AUTH_PASSWORD=${{ env.SSM_PARAMETER_PATH }}/BASIC_AUTH_PASSWORD
             DATABASE_HOST=${{ env.SSM_PARAMETER_PATH }}/DATABASE_HOST
@@ -101,6 +99,7 @@ jobs:
             DATABASE_USERNAME=${{ env.SSM_PARAMETER_PATH }}/DATABASE_USERNAME
             DATABASE_PASSWORD=${{ env.SSM_PARAMETER_PATH }}/DATABASE_PASSWORD
             REDIS_URL=${{ env.SSM_PARAMETER_PATH }}/REDIS_URL
+            STORAGE_SERVICE=${{ env.SSM_PARAMETER_PATH }}/STORAGE_SERVICE
             AWS_S3_BUCKET=${{ env.SSM_PARAMETER_PATH }}/AWS_S3_BUCKET
             GOOGLE_OAUTH_CLIENT_ID=${{ env.SSM_PARAMETER_PATH }}/GOOGLE_OAUTH_CLIENT_ID
             GOOGLE_OAUTH_CLIENT_SECRET=${{ env.SSM_PARAMETER_PATH }}/GOOGLE_OAUTH_CLIENT_SECRET
@@ -116,8 +115,7 @@ jobs:
           container-name: nginx
           image: ${{ env.IMAGE_NGINX }}
           # https://github.com/aws-actions/amazon-ecs-render-task-definition/issues/347
-          environment-variables: |
-            DUMMY_VAR=placeholder
+          environment-variables: DUMMY_VAR=placeholder
           secrets: |
             APP_HOST=${{ env.SSM_PARAMETER_PATH }}/APP_HOST
             VPC_CIDR=${{ env.SSM_PARAMETER_PATH }}/VPC_CIDR
