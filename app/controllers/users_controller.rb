@@ -32,7 +32,7 @@ class UsersController < ApplicationController
     end
 
     def set_page_component_path
-      @props[:page_component_path] = 'users/show'
+      @props[:page_component_path] = '/users/show'
     end
 
     def set_user

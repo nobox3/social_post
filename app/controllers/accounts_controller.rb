@@ -37,6 +37,6 @@ class AccountsController < ApplicationController
   private
 
     def set_page_component_path
-      @props = { page_component_path: 'accounts/index' }
+      @props = { page_component_path: '/accounts/index' }
     end
 end

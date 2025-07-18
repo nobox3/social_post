@@ -11,7 +11,7 @@ type PageComponentProps = {
 }
 
 const PageComponent = loadable(
-	(props: PageComponentProps) => import(`src/components/pages/${props.page_component_path}`),
+	(props: PageComponentProps) => import(`src/components/pages${props.page_component_path}`),
 )
 
 type Props = PageComponentProps & Omit<ProvidersProps, 'children'>

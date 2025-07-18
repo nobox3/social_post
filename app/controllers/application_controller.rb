@@ -37,12 +37,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def user_not_authorized(e)
-      flash[:error] = policy_error_message(e)
-
-      redirect_to(request.referer || new_user_session_path)
-    end
-
     def navigational_get_request?
       request.get? && !request.xhr? && is_navigational_format?
     end
@@ -59,7 +53,7 @@ class ApplicationController < ActionController::Base
       end
 
       @props[:i18n_params_for_path] ||= i18n_params_for_path
-      @props[:page_component_path] ||= (action = action_name) == 'index' ? controller_path : "#{controller_path}/#{action}"
+      @props[:page_component_path] ||= "/#{controller_path}" + ((action = action_name) == 'index' ? '' : "/#{action}")
       @props[:current_user] = serialize_current_user if !@props[:current_user] && user_signed_in?
       @props
     end

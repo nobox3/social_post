@@ -9,7 +9,16 @@ module PunditAuthorization
   end
 
   def user_not_authorized(e)
-    render json: { errors: policy_error_message(e) }, status: :forbidden
+    self.status = :forbidden
+
+    respond_to do |format|
+      format.json { render json: { error: policy_error_message(e) } }
+
+      format.html do
+        @props = { page_component_path: '/errors/show', status: }
+        render '/common'
+      end
+    end
   end
 
   def policy_error_message(e)

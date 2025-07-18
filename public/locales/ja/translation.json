@@ -84,6 +84,8 @@
     "code_401_sub": "Unauthorized",
     "code_402": "このページの表示にはお支払いが必要です。",
     "code_402_sub": "Payment required",
+    "code_403": "ページが表示できませんでした。",
+    "code_403_sub": "Forbidden",
     "code_404": "ページが見つかりませんでした。",
     "code_404_sub": "Not found",
     "code_422": "ページが表示できませんでした。",

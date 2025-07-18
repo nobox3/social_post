@@ -181,6 +181,8 @@
     "code_401_sub": "Unauthorized",
     "code_402": "Payment is required to view this page",
     "code_402_sub": "Payment required",
+    "code_403": "The page could not be displayed.",
+    "code_403_sub": "Forbidden",
     "code_404": "The page was not found",
     "code_404_sub": "Not found",
     "code_422": "The page could not be displayed",
