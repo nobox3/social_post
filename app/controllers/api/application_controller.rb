@@ -25,7 +25,7 @@ module Api
       end
 
       def record_not_discarded(e)
-        render_system_error(e)
+        e.record&.errors.present? ? render_invalid_error(e) : render_system_error(e)
       end
 
       def render_invalid_error(e)

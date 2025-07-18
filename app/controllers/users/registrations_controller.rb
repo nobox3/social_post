@@ -7,6 +7,8 @@ module Users
     before_action :configure_sign_up_params, only: [:create]
     # before_action :configure_account_update_params, only: [:update]
 
+    rescue_from Discard::RecordNotDiscarded, with: :record_not_discarded
+
     # GET /resource/edit
     def edit
       redirect_to register_info_account_path
@@ -104,6 +106,17 @@ module Users
       # The path used after sign up for inactive accounts.
       def after_inactive_sign_up_path_for(_resource)
         root_path
+      end
+
+    private
+
+      def record_not_discarded(e)
+        if (errors = e.record&.errors&.full_messages).present?
+          render json: { errors: }, status: :unprocessable_entity
+        else
+          logger.info e.message
+          head :internal_server_error
+        end
       end
   end
 end
