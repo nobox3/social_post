@@ -50,12 +50,16 @@ const HandleApiResponseError = ({ children }: IProps) => {
 		}
 
 		switch (responseError.response?.status) {
+			case undefined:
+				break
+
 			case 401: // Unauthorized
 			case 403: // Forbidden
 			case 422: // Unprocessable Entity
 				closeModal()
 				addFlashMessages(toFlashMessagesFromError(responseError))
 				break
+
 			default:
 				showErrorModal(responseError)
 				break

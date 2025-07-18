@@ -27,12 +27,12 @@ function useAbortController() {
 					processIdRef.current = 0
 					setAbortController(null)
 
-					return result
+					return Promise.resolve(result)
 				}
 
-				return null
-			} catch {
-				return null
+				return Promise.resolve(null)
+			} catch (error) {
+				return Promise.reject(error)
 			}
 		},
 		[triggerAbort],

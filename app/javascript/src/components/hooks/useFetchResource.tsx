@@ -77,24 +77,30 @@ function useFetchResource<T extends string, R, Id = number>({
 				{ isReplace: replaceParams },
 			)
 
-			const result = await fetchTargetResource(targetResourceKey, newParams, id)
+			try {
+				const result = await fetchTargetResource(targetResourceKey, newParams, id)
 
-			if (result) {
-				let path: string
+				if (result) {
+					let path: string
 
-				if (pathToPush) {
-					path = pathToPush
-				} else if (typeof resourceKeyToPath === 'string') {
-					path = `${resourceKeyToPath}/${targetResourceKey}`
-				} else if (typeof resourceKeyToPath === 'function') {
-					path = resourceKeyToPath(targetResourceKey, id)
-				} else {
-					path = resourceKeyToPath?.[targetResourceKey]
+					if (pathToPush) {
+						path = pathToPush
+					} else if (typeof resourceKeyToPath === 'string') {
+						path = `${resourceKeyToPath}/${targetResourceKey}`
+					} else if (typeof resourceKeyToPath === 'function') {
+						path = resourceKeyToPath(targetResourceKey, id)
+					} else {
+						path = resourceKeyToPath?.[targetResourceKey]
+					}
+
+					path && updatePathHistoryWithMeta(path, { i18nMetaParams, searchParams: newParams })
+					setFetchResult(result)
+					setApiSearchParams(newParams)
 				}
 
-				path && updatePathHistoryWithMeta(path, { i18nMetaParams, searchParams: newParams })
-				setFetchResult(result)
-				setApiSearchParams(newParams)
+				return Promise.resolve()
+			} catch (error) {
+				return Promise.reject(error)
 			}
 		}, [
 			apiSearchParams, fetchTargetResource, i18nMetaParams,
