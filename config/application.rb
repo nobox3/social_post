@@ -36,7 +36,7 @@ module SocialPost
     config.active_storage.queues.analysis = :active_storage_analysis
     config.active_storage.queues.purge = :active_storage_purge
     config.action_mailer.deliver_later_queue_name = :mailers
-    config.action_mailer.default_options = { from: proc { "portfolio <portfolio@example.com>" } }
+    config.action_mailer.default_options = { from: "Social Post <noreply@#{ENV.fetch('APP_HOST', 'example.com')}>" }
 
     config.generators do |g|
       g.helper false
