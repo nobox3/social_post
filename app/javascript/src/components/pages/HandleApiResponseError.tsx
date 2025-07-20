@@ -49,7 +49,7 @@ const HandleApiResponseError = ({ children }: IProps) => {
 			return
 		}
 
-		switch (responseError.response?.status) {
+		switch (responseError.status) {
 			case undefined:
 				break
 
