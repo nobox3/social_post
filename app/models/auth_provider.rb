@@ -29,21 +29,35 @@ class AuthProvider < ApplicationRecord
 
   before_destroy :abort_with_no_other_authentication_methods, prepend: true, unless: :has_other_authentication_methods?
 
-  def build_user_by_info(info)
-    build_user(password: generate_alphanumeric, password_set_by_system: true, confirmed_at: Time.zone.now) do |user|
+  def build_user_by_info(info, attributes = {})
+    build_user(
+      password: generate_alphanumeric, password_set_by_system: true, confirmed_at: Time.zone.now, **attributes,
+    ) do |u|
       if info.present?
-        user.email = info[:email]
-        user.username = info[:name]
-        user.attach_avatar_from_url(info[:image]) if info[:image].present?
+        u.email = info[:email]
+        u.username = info[:name]
+        u.attach_avatar_from_url(info[:image]) if info[:image].present?
       end
 
-      user.assign_unique_alphanumeric(:slug)
-      user.email_verified = user.email.present?
-      user.email = user.email.presence || "user@#{user.slug}.com"
+      u.assign_unique_alphanumeric(:slug)
+      u.email_verified = u.email.present?
+      u.email = u.email.presence || "user@#{u.slug}.com"
     end
   end
 
+  def save_with_user
+    user.auth_providers << self
+    validate_user && user.save(validate: false)
+  end
+
   private
+
+    def validate_user
+      user.validate
+      user.avatar = nil if user.errors.delete(:avatar).present?
+
+      user.errors.empty?
+    end
 
     def has_other_authentication_methods?
       !user.password_set_by_system? || user.auth_providers.where.not(id:).exists?

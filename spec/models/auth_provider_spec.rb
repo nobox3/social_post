@@ -22,12 +22,12 @@ require 'rails_helper'
 
 RSpec.describe AuthProvider, type: :model do
   context 'build_user_by_info' do
-    let!(:auth_info) { create_mock_auth(:google)[:info] }
-    let!(:auth_provider) { build(:auth_provider) }
+    let!(:google_auth) { add_mock_auth(:google_oauth2) }
+    let!(:auth_info) { google_auth[:info] }
+    let(:auth_provider) { build(:auth_provider, google_auth.slice(:provider, :uid)) }
+    let(:user) { auth_provider.build_user_by_info(auth_info) }
 
     it 'builds user by info' do
-      user = auth_provider.build_user_by_info(auth_info)
-
       expect(user).to be_valid
       expect(user.email).to eq(auth_info[:email])
       expect(user.username).to eq(auth_info[:name])
@@ -39,7 +39,6 @@ RSpec.describe AuthProvider, type: :model do
 
     it 'builds user by info without email' do
       auth_info[:email] = nil
-      user = auth_provider.build_user_by_info(auth_info)
 
       expect(user).to be_valid
       expect(user.email).to be_present
@@ -48,25 +47,39 @@ RSpec.describe AuthProvider, type: :model do
 
     it 'builds user by info without name' do
       auth_info[:name] = nil
-      user = auth_provider.build_user_by_info(auth_info)
 
       expect(user).to be_valid
       expect(user.username).to start_with('user-')
     end
 
-    it 'builds user by info with image' do
-      auth_info[:image] = file_fixture('avatars/avatar_1.webp').to_s
-      user = User.new
+    context 'builds user by info with image' do
+      let(:auth_provider) do
+        auth_provider = build(:auth_provider, google_auth.slice(:provider, :uid))
 
-      allow(user).to receive(:attach_avatar_from_url).with(auth_info[:image]) do |url|
-        user.avatar.attach(io: File.open(url), filename: 'image.webp')
+        allow(auth_provider).to receive(:build_user_by_info).and_wrap_original do |m, info|
+          url = info.delete(:image)
+          user = m.call(info)
+
+          user.avatar.attach(io: File.open(url), filename: "avatar#{File.extname(url)}")
+          user
+        end
+
+        auth_provider
       end
 
-      allow(auth_provider).to receive(:build_user_by_info).with(auth_info) do |info|
-        user.tap { |u| u.attach_avatar_from_url(info[:image]) }
+      it 'attaches avatar successfully' do
+        auth_info[:image] = file_fixture('avatars/avatar_1.webp').to_s
+        auth_provider.tap { |ap| ap.build_user_by_info(auth_info) }.save_with_user
+
+        expect(auth_provider.user.avatar).to be_attached
       end
 
-      expect(auth_provider.build_user_by_info(auth_info).avatar).to be_attached
+      it 'does not attach avatar with invalid image' do
+        auth_info[:image] = file_fixture('images/unsupported_image_type.heic').to_s
+        auth_provider.tap { |ap| ap.build_user_by_info(auth_info) }.save_with_user
+
+        expect(auth_provider.user.avatar).not_to be_attached
+      end
     end
   end
 end

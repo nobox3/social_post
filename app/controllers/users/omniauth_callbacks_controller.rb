@@ -55,8 +55,11 @@ module Users
         end
 
         if request.env['omniauth.params']['is_registration'] == 'true'
-          @auth_provider.tap { |ap| ap.build_user_by_info(info) }.save!
-          redirect_with_sign_in
+          @auth_provider.build_user_by_info(info)
+
+          return redirect_with_sign_in if @auth_provider.save_with_user
+
+          redirect_with_error(:failure, reason: @auth_provider.user.errors.full_messages.to_sentence)
         else
           redirect_with_error(:not_registered)
         end
