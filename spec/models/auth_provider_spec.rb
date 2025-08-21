@@ -51,35 +51,5 @@ RSpec.describe AuthProvider, type: :model do
       expect(user).to be_valid
       expect(user.username).to start_with('user-')
     end
-
-    context 'builds user by info with image' do
-      let(:auth_provider) do
-        auth_provider = build(:auth_provider, google_auth.slice(:provider, :uid))
-
-        allow(auth_provider).to receive(:build_user_by_info).and_wrap_original do |m, info|
-          url = info.delete(:image)
-          user = m.call(info)
-
-          user.avatar.attach(io: File.open(url), filename: "avatar#{File.extname(url)}")
-          user
-        end
-
-        auth_provider
-      end
-
-      it 'attaches avatar successfully' do
-        auth_info[:image] = file_fixture('avatars/avatar_1.webp').to_s
-        auth_provider.tap { |ap| ap.build_user_by_info(auth_info) }.save_with_user
-
-        expect(auth_provider.user.avatar).to be_attached
-      end
-
-      it 'does not attach avatar with invalid image' do
-        auth_info[:image] = file_fixture('images/unsupported_image_type.heic').to_s
-        auth_provider.tap { |ap| ap.build_user_by_info(auth_info) }.save_with_user
-
-        expect(auth_provider.user.avatar).not_to be_attached
-      end
-    end
   end
 end

@@ -36,28 +36,17 @@ class AuthProvider < ApplicationRecord
       if info.present?
         u.email = info[:email]
         u.username = info[:name]
-        u.attach_avatar_from_url(info[:image]) if info[:image].present?
       end
 
       u.assign_unique_alphanumeric(:slug)
       u.email_verified = u.email.present?
       u.email = u.email.presence || "user@#{u.slug}.com"
-    end
-  end
 
-  def save_with_user
-    user.auth_providers << self
-    validate_user && user.save(validate: false)
+      u.auth_providers << self
+    end
   end
 
   private
-
-    def validate_user
-      user.validate
-      user.avatar = nil if user.errors.delete(:avatar).present?
-
-      user.errors.empty?
-    end
 
     def has_other_authentication_methods?
       !user.password_set_by_system? || user.auth_providers.where.not(id:).exists?

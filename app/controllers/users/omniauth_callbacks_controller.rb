@@ -54,14 +54,15 @@ module Users
           return
         end
 
-        if request.env['omniauth.params']['is_registration'] == 'true'
-          @auth_provider.build_user_by_info(info)
+        return redirect_with_error(:not_registered) unless request.env['omniauth.params']['is_registration'] == 'true'
 
-          return redirect_with_sign_in if @auth_provider.save_with_user
+        user = @auth_provider.build_user_by_info(info)
 
-          redirect_with_error(:failure, reason: @auth_provider.user.errors.full_messages.to_sentence)
+        if user.save
+          user.attach_avatar_from_url(info.image) if info.image.present?
+          redirect_with_sign_in
         else
-          redirect_with_error(:not_registered)
+          redirect_with_error(:failure, reason: user.errors.full_messages.to_sentence)
         end
       end
 

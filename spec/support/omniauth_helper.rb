@@ -18,7 +18,7 @@ module OmniauthHelper
   def create_auth_provider_by_mock_auth(mock_auth_or_provider)
     mock = mock_auth_or_provider.is_a?(Symbol) ? add_mock_auth(mock_auth_or_provider) : mock_auth_or_provider
     auth_provider = build(:auth_provider, provider: mock[:provider], uid: mock[:uid])
-    auth_provider.tap { |ap| ap.build_user_by_info(mock[:info]) }.save_with_user
+    auth_provider.build_user_by_info(mock[:info]).save!
     auth_provider
   end
 end
