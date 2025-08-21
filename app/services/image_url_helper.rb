@@ -15,7 +15,7 @@ class ImageUrlHelper
     def url(image, key)
       cdn_proxy_url(process_with_key(image, key))
     rescue StandardError => e
-      Rails.logger.warn(e.message)
+      Rails.logger.info "Failed to generate image URL: #{e.message}"
       nil
     end
 
@@ -26,11 +26,11 @@ class ImageUrlHelper
     def attach_from_url(image, url)
       URI.parse(url).open do |io|
         if (type = io.content_type).start_with?('image/')
-          image.attach(io:, filename: type.tr('/', '.'))
+          image.attach(io:, filename: type.tr('/', '.'), content_type: type)
         end
       end
     rescue StandardError => e
-      Rails.logger.warn(e.message)
+      Rails.logger.info "Failed to attach image from URL: #{url}, Error: #{e.message}"
       nil
     end
 
