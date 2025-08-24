@@ -173,7 +173,22 @@ Rails.application.routes.draw do
 
     if cdn_host.present?
       direct :cdn_proxy do |representation|
-        "https://#{cdn_host}/#{representation.key}"
+        if representation.respond_to?(:signed_id)
+          route_for(
+            :rails_service_blob_proxy,
+            representation.signed_id,
+            representation.filename,
+            host: cdn_host,
+          )
+        else
+          route_for(
+            :rails_blob_representation_proxy,
+            representation.blob.signed_id,
+            representation.variation.key,
+            representation.blob.filename,
+            host: cdn_host,
+          )
+        end
       end
     else
       direct :cdn_proxy do |representation|
