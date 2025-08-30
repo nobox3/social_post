@@ -1,3 +1,7 @@
+if User.any?
+  abort 'Aborted to create seeds. Users already exist.'
+end
+
 # Check mailer and API are disabled
 errors = []
 errors << 'ActionMailer::Base' if ActionMailer::Base.perform_deliveries

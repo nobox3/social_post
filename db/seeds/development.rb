@@ -7,6 +7,21 @@ if errors.any?
   abort "Aborted to create seeds. Mailer or API are enabled, please disable it: #{errors.join(', ')}"
 end
 
+require(Rails.root.join('db', 'seeds', 'seed_delete'))
+
+puts 'Clear Sidekiq schedule set and queues...'
+Sidekiq::ScheduledSet.new.clear
+Sidekiq::RetrySet.new.clear
+Sidekiq::DeadSet.new.clear
+Sidekiq::Queue.all.each(&:clear)
+
+if (users = User.all).any?
+  puts '', '== Clear old users and its associated data...'
+  SeedDelete.delete_users(users)
+end
+
+puts '', '== Create seed data...'
+
 base_timestamp = 3.days.ago
 
 puts 'Create admin...'
