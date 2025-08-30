@@ -32,6 +32,11 @@ on:
         required: true
         default: false
         type: boolean
+      desired_count:
+        description: Desired number of tasks
+        required: true
+        default: 1
+        type: number
 
 jobs:
   deploy:
@@ -115,6 +120,7 @@ jobs:
 
       - name: Run task to apply database migrations
         if: ${{ inputs.workflow_type != 'push only' && !inputs.skip_database_migrations }}
+        id: run-task-migrations
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-nginx-container.outputs.task-definition }}
@@ -126,15 +132,24 @@ jobs:
           run-task-security-groups: ${{ env.SECURITY_GROUPS }}
           run-task-subnets: ${{ env.SUBNETS }}
           run-task-assign-public-IP: ${{ env.ASSIGN_PUBLIC_IP }}
-          run-task-container-overrides: '[{"name": "web", "command": ["./bin/rails", "db:prepare"]}]'
+          run-task-container-overrides: '[{"name":"web","command":["true"],"environment":[{"name":"TASK_TYPE","value":"migrate"}]},{"name":"nginx","command":["true"]}]'
           wait-for-task-stopped: true
 
+      - name: Deploy to Amazon ECS with registered task definition
+        if: ${{ inputs.workflow_type != 'push only' && !inputs.skip_database_migrations }}
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.APP_ID }} --service ${{ env.APP_ID }} --desired-count ${{ inputs.desired_count }} \
+            --task-definition ${{ steps.run-task-migrations.outputs.task-definition-arn }}
+
+          aws ecs wait service-stable --cluster ${{ env.APP_ID }} --services ${{ env.APP_ID }}
+
       - name: Deploy to Amazon ECS
-        if: inputs.workflow_type != 'push only'
+        if: ${{ inputs.workflow_type != 'push only' && inputs.skip_database_migrations }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-nginx-container.outputs.task-definition }}
           service: ${{ env.APP_ID }}
           cluster: ${{ env.APP_ID }}
           wait-for-service-stability: true
-          desired-count: 1
+          desired-count: ${{ inputs.desired_count }}

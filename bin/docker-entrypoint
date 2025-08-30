@@ -3,6 +3,11 @@
 echo "Starting entrypoint script..."
 echo "- args: $@"
 
+if [ "$TASK_TYPE" = "migrate" ]; then
+  echo "Preparing database..."
+  ./bin/rails db:prepare
+fi
+
 echo "Change ownership of tmp/sockets to rails:rails"
 chown -R rails:rails tmp/sockets
 
