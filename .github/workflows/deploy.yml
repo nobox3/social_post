@@ -109,8 +109,8 @@ jobs:
 
           [ "$VPC_CONFIG" = null ] && echo "::error::VPC configuration not found" && exit 1
 
-          echo "SECURITY_GROUPS=$(echo $VPC_CONFIG | jq -c '.securityGroups')" >> $GITHUB_ENV
-          echo "SUBNETS=$(echo $VPC_CONFIG | jq -c '.subnets')" >> $GITHUB_ENV
+          echo "SECURITY_GROUPS=$(echo $VPC_CONFIG | jq -cr '.securityGroups | join(",")')" >> $GITHUB_ENV
+          echo "SUBNETS=$(echo $VPC_CONFIG | jq -cr '.subnets | join(",")')" >> $GITHUB_ENV
           echo "ASSIGN_PUBLIC_IP=$(echo $VPC_CONFIG | jq -r '.assignPublicIp')" >> $GITHUB_ENV
 
       - name: Run task to apply database migrations
