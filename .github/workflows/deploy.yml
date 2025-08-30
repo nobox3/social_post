@@ -142,7 +142,7 @@ jobs:
             --cluster ${{ env.APP_ID }} --service ${{ env.APP_ID }} --desired-count ${{ inputs.desired_count }} \
             --task-definition ${{ steps.run-task-migrations.outputs.task-definition-arn }}
 
-          aws ecs wait service-stable --cluster ${{ env.APP_ID }} --services ${{ env.APP_ID }}
+          aws ecs wait services-stable --cluster ${{ env.APP_ID }} --services ${{ env.APP_ID }}
 
       - name: Deploy to Amazon ECS
         if: ${{ inputs.workflow_type != 'push only' && inputs.skip_database_migrations }}
