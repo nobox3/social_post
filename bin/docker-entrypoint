@@ -1,13 +1,7 @@
 #!/bin/bash -e
 
 echo "Starting entrypoint script..."
-echo "- args: ${1}, ${2}"
-
-# If running the rails server then create or migrate existing database
-if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  echo "Preparing database..."
-  ./bin/rails db:prepare
-fi
+echo "- args: $@"
 
 echo "Change ownership of tmp/sockets to rails:rails"
 chown -R rails:rails tmp/sockets

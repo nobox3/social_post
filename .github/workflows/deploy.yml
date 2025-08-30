@@ -18,7 +18,7 @@ on:
         type: choice
         options:
           - production
-      workflowType:
+      workflow_type:
         description: Choose workflow type
         required: true
         default: push and deploy
@@ -27,21 +27,24 @@ on:
           - push and deploy
           - push only
           - deploy only
+      skip_database_migrations:
+        description: Skip database migrations
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
       APP_ID: ${{ secrets.APP_ID_PREFIX }}-${{ github.event.inputs.environment }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      SSM_PARAMETER_PATH: ${{ secrets.SSM_PARAMETER_PATH }}/${{ github.event.inputs.environment }}
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
           role-duration-seconds: 1800
         
@@ -53,11 +56,11 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Set new image tag
-        if: github.event.inputs.workflowType != 'deploy only'
+        if: github.event.inputs.workflow_type != 'deploy only'
         run: echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Set latest image tag
-        if: github.event.inputs.workflowType == 'deploy only'
+        if: github.event.inputs.workflow_type == 'deploy only'
         run: |
           echo "IMAGE_TAG=$(aws ecr describe-images --repository-name ${{ env.APP_ID }}-web \
             --query 'sort_by(imageDetails, &imagePushedAt)[-1].imageTags[0]' --output text)" >> $GITHUB_ENV
@@ -70,7 +73,7 @@ jobs:
           echo "IMAGE_NGINX=$IMAGE_NAME_COMMON-nginx:$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Build, tag, and push docker image to Amazon ECR
-        if: github.event.inputs.workflowType != 'deploy only'
+        if: github.event.inputs.workflow_type != 'deploy only'
         id: build-image
         run: |
           docker compose -p $APP_ID build web nginx
@@ -80,49 +83,54 @@ jobs:
           docker push $IMAGE_NGINX
 
       - name: Render Amazon ECS task definition for web container
-        if: github.event.inputs.workflowType != 'push only'
+        if: github.event.inputs.workflow_type != 'push only'
         id: render-web-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition-family: ${{ env.APP_ID }}
           container-name: web
           image: ${{ env.IMAGE_WEB }}
-          environment-variables: AWS_REGION=${{ env.AWS_REGION }}
-          secrets: |
-            APP_HOST=${{ env.SSM_PARAMETER_PATH }}/APP_HOST
-            SECRET_KEY_BASE=${{ env.SSM_PARAMETER_PATH }}/SECRET_KEY_BASE
-            ENABLE_BASIC_AUTH=${{ env.SSM_PARAMETER_PATH }}/ENABLE_BASIC_AUTH
-            BASIC_AUTH_USERNAME=${{ env.SSM_PARAMETER_PATH }}/BASIC_AUTH_USERNAME
-            BASIC_AUTH_PASSWORD=${{ env.SSM_PARAMETER_PATH }}/BASIC_AUTH_PASSWORD
-            DATABASE_HOST=${{ env.SSM_PARAMETER_PATH }}/DATABASE_HOST
-            DATABASE_NAME=${{ env.SSM_PARAMETER_PATH }}/DATABASE_NAME
-            DATABASE_USERNAME=${{ env.SSM_PARAMETER_PATH }}/DATABASE_USERNAME
-            DATABASE_PASSWORD=${{ env.SSM_PARAMETER_PATH }}/DATABASE_PASSWORD
-            REDIS_URL=${{ env.SSM_PARAMETER_PATH }}/REDIS_URL
-            STORAGE_SERVICE=${{ env.SSM_PARAMETER_PATH }}/STORAGE_SERVICE
-            AWS_S3_BUCKET=${{ env.SSM_PARAMETER_PATH }}/AWS_S3_BUCKET
-            CDN_HOST=${{ env.SSM_PARAMETER_PATH }}/CDN_HOST
-            GOOGLE_OAUTH_CLIENT_ID=${{ env.SSM_PARAMETER_PATH }}/GOOGLE_OAUTH_CLIENT_ID
-            GOOGLE_OAUTH_CLIENT_SECRET=${{ env.SSM_PARAMETER_PATH }}/GOOGLE_OAUTH_CLIENT_SECRET
-            SENDGRID_API_KEY=${{ env.SSM_PARAMETER_PATH }}/SENDGRID_API_KEY
-            SENDGRID_SUBSCRIPTION_WEBHOOK_VERIFICATION_KEY=${{ env.SSM_PARAMETER_PATH }}/SENDGRID_SUBSCRIPTION_WEBHOOK_VERIFICATION_KEY
 
       - name: Modify Amazon ECS task definition with nginx container
-        if: github.event.inputs.workflowType != 'push only'
+        if: github.event.inputs.workflow_type != 'push only'
         id: render-nginx-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ steps.render-web-container.outputs.task-definition }}
           container-name: nginx
           image: ${{ env.IMAGE_NGINX }}
-          # https://github.com/aws-actions/amazon-ecs-render-task-definition/issues/347
-          environment-variables: DUMMY_VAR=placeholder
-          secrets: |
-            APP_HOST=${{ env.SSM_PARAMETER_PATH }}/APP_HOST
-            VPC_CIDR=${{ env.SSM_PARAMETER_PATH }}/VPC_CIDR
 
-      - name: Deploy to Amazon ECS service
-        if: github.event.inputs.workflowType != 'push only'
+      - name: Get AWS VPC configuration
+        if: github.event.inputs.workflow_type != 'push only' && !github.event.inputs.skip_database_migrations
+        run: |
+          local vpc_config=$(aws ecs describe-services \
+            --cluster ${{ env.APP_ID }} --services ${{ env.APP_ID }} \
+            --query 'services[0].networkConfiguration.awsvpcConfiguration' --output json)
+
+          [ "$vpc_config" = null ] && echo "::error::VPC configuration not found" && exit 1
+
+          echo "SECURITY_GROUPS=$(echo $vpc_config | jq -c '.securityGroups')" >> $GITHUB_ENV
+          echo "SUBNETS=$(echo $vpc_config | jq -c '.subnets')" >> $GITHUB_ENV
+          echo "ASSIGN_PUBLIC_IP=$(echo $vpc_config | jq -r '.assignPublicIp')" >> $GITHUB_ENV
+
+      - name: Run task to apply database migrations
+        if: github.event.inputs.workflow_type != 'push only' && !github.event.inputs.skip_database_migrations
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-nginx-container.outputs.task-definition }}
+          service: ${{ env.APP_ID }}
+          cluster: ${{ env.APP_ID }}
+          wait-for-service-stability: true
+          run-task: true
+          run-task-launch-type: FARGATE
+          run-task-security-groups: ${{ env.SECURITY_GROUPS }}
+          run-task-subnets: ${{ env.SUBNETS }}
+          run-task-assign-public-IP: ${{ env.ASSIGN_PUBLIC_IP }}
+          run-task-container-overrides: '[{"name": "web", "command": ["./bin/rails", "db:prepare"]}]'
+          wait-for-task-stopped: true
+
+      - name: Deploy to Amazon ECS
+        if: github.event.inputs.workflow_type != 'push only'
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-nginx-container.outputs.task-definition }}
