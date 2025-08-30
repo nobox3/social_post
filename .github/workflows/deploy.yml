@@ -103,15 +103,15 @@ jobs:
       - name: Get AWS VPC configuration
         if: ${{ inputs.workflow_type != 'push only' && !inputs.skip_database_migrations }}
         run: |
-          local vpc_config=$(aws ecs describe-services \
+          VPC_CONFIG=$(aws ecs describe-services \
             --cluster ${{ env.APP_ID }} --services ${{ env.APP_ID }} \
             --query 'services[0].networkConfiguration.awsvpcConfiguration' --output json)
 
-          [ "$vpc_config" = null ] && echo "::error::VPC configuration not found" && exit 1
+          [ "$VPC_CONFIG" = null ] && echo "::error::VPC configuration not found" && exit 1
 
-          echo "SECURITY_GROUPS=$(echo $vpc_config | jq -c '.securityGroups')" >> $GITHUB_ENV
-          echo "SUBNETS=$(echo $vpc_config | jq -c '.subnets')" >> $GITHUB_ENV
-          echo "ASSIGN_PUBLIC_IP=$(echo $vpc_config | jq -r '.assignPublicIp')" >> $GITHUB_ENV
+          echo "SECURITY_GROUPS=$(echo $VPC_CONFIG | jq -c '.securityGroups')" >> $GITHUB_ENV
+          echo "SUBNETS=$(echo $VPC_CONFIG | jq -c '.subnets')" >> $GITHUB_ENV
+          echo "ASSIGN_PUBLIC_IP=$(echo $VPC_CONFIG | jq -r '.assignPublicIp')" >> $GITHUB_ENV
 
       - name: Run task to apply database migrations
         if: ${{ inputs.workflow_type != 'push only' && !inputs.skip_database_migrations }}
